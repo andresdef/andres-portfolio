@@ -135,7 +135,7 @@ h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;
 @media (max-width:900px){.plans{grid-template-columns:minmax(0,1fr)}.plan .for{min-height:0}}
 
 /* per-minute calc */
-.calc{margin-top:clamp(40px,5vw,72px);border:1px solid var(--line);border-radius:6px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);overflow:hidden}
+.calc{border:1px solid var(--line);border-radius:6px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);overflow:hidden}
 .calc>div{padding:clamp(22px,2.6vw,40px)}
 .calc .res{background:var(--fg);color:var(--bg);display:flex;flex-direction:column;gap:10px}
 .calc h3{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:30px;line-height:1}
@@ -350,33 +350,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 
   <section id="pricing" class="pricing" aria-labelledby="pr-h">
     <div class="wrap">
-      <div class="sec-head"><h2 id="pr-h">Pricing</h2><span class="mono mute">Final price depends on length and complexity</span></div>
-      <div class="plans">
-        <article class="plan">
-          <h3>Basic</h3>
-          <p class="for">A short edit or a simple animated clip.</p>
-          <p class="price"><small>from</small>$30</p>
-          <ul><li>Up to 15 seconds</li><li>Cut to music, transitions, color</li><li>1 round of revisions</li><li>Delivery in 2–3 days</li></ul>
-          <a class="btn" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
-        </article>
-        <article class="plan pop"><span class="tag mono">Popular</span>
-          <h3>Standard</h3>
-          <p class="for">Promo video or a full edit with custom motion.</p>
-          <p class="price"><small>from</small>$80</p>
-          <ul><li>Up to 30 seconds</li><li>Custom motion graphics and type</li><li>Sound design and sync</li><li>2 rounds of revisions</li><li>Vertical and horizontal formats</li><li>Delivery in 4–6 days</li></ul>
-          <a class="btn solid" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
-        </article>
-        <article class="plan">
-          <h3>Premium</h3>
-          <p class="for">Brand intro, ad spot or complex animation.</p>
-          <p class="price"><small>from</small>$180</p>
-          <ul><li>Up to 60 seconds</li><li>3D and advanced animation (Blender)</li><li>Full sound design</li><li>3 rounds of revisions</li><li>All formats and project files</li><li>Priority delivery</li></ul>
-          <a class="btn" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
-        </article>
-        </div>
+      <div class="sec-head"><h2 id="pr-h">Pricing</h2><span class="mono mute">Pay for the length you need</span></div>
       <div class="calc" id="calc">
         <div>
-          <h3>Or pay per minute</h3>
+          <h3>Price per minute</h3>
           <p class="sub">Pick the type, set the length, see the estimate. Minimum order applies.</p>
           <div class="types" role="group" aria-label="Work type">
             <button class="mono" data-rate="40" data-min="30" data-name="Edit" aria-pressed="false">Edit · $40/min</button>
@@ -394,7 +371,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
           <a class="btn solid" id="ord" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
         </div>
       </div>
-      <p class="pnote">Work starts after a 50% prepayment. Rush delivery +50%. Not sure which fits? Message me with your idea and I will suggest a plan and a price.</p>
+      <p class="pnote">Work starts after a 50% prepayment. Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.</p>
     </div>
   </section>
 
