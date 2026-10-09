@@ -350,24 +350,24 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 
   <section id="pricing" class="pricing" aria-labelledby="pr-h">
     <div class="wrap">
-      <div class="sec-head"><h2 id="pr-h">Pricing</h2><span class="mono mute">Pay for the length you need</span></div>
+      <div class="sec-head"><h2 id="pr-h">Pricing</h2><span class="mono mute">From $20 per video</span></div>
       <div class="calc" id="calc">
         <div>
-          <h3>Price per minute</h3>
-          <p class="sub">Pick the type, set the length, see the estimate. Minimum order applies.</p>
+          <h3>Price per video</h3>
+          <p class="sub">Pick the type and the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.</p>
           <div class="types" role="group" aria-label="Work type">
-            <button class="mono" data-rate="40" data-min="30" data-name="Edit" aria-pressed="false">Edit · $40/min</button>
-            <button class="mono" data-rate="120" data-min="60" data-name="Motion design" aria-pressed="true">Motion design · $120/min</button>
-            <button class="mono" data-rate="250" data-min="120" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · $250/min</button>
+            <button class="mono" data-base="20" data-step="8" data-name="Edit" aria-pressed="false">Edit · from $20</button>
+            <button class="mono" data-base="40" data-step="15" data-name="Motion design" aria-pressed="true">Motion design · from $40</button>
+            <button class="mono" data-base="80" data-step="30" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · from $80</button>
           </div>
           <label class="mono" for="len"><span>Length</span><span id="lenv">0:30</span></label>
-          <input id="len" type="range" min="5" max="300" step="5" value="30">
+          <input id="len" type="range" min="5" max="120" step="5" value="30">
           <label class="rush mono"><input id="rush" type="checkbox"> Rush delivery (+50%)</label>
         </div>
         <div class="res">
           <span class="mono">Estimate</span>
-          <div class="big" id="total">$60</div>
-          <span class="mono" id="why">Motion design · 0:30 · minimum order $60</span>
+          <div class="big" id="total">$40</div>
+          <span class="mono" id="why">Motion design · 0:30 · base price</span>
           <a class="btn solid" id="ord" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
         </div>
       </div>
@@ -533,9 +533,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 <script>
 (function(){var c=document.getElementById('calc');if(!c)return;var b=[].slice.call(c.querySelectorAll('.types button')),len=c.querySelector('#len'),rush=c.querySelector('#rush'),t=c.querySelector('#total'),w=c.querySelector('#why'),lv=c.querySelector('#lenv');
 function cur(){return b.filter(function(x){return x.getAttribute('aria-pressed')==='true'})[0]}
-function f(){var x=cur(),r=+x.dataset.rate,m=+x.dataset.min,s=+len.value,p=Math.max(s/60*r,m),minHit=s/60*r<m;if(rush.checked)p*=1.5;
-lv.textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2);t.textContent='$'+Math.round(p);
-w.textContent=x.dataset.name+' · '+lv.textContent+(minHit?' · minimum order $'+m:'')+(rush.checked?' · rush':'')}
+function f(){var x=cur(),base=+x.dataset.base,st=+x.dataset.step,sec=+len.value,extra=Math.max(0,Math.ceil((sec-30)/15)),p=base+extra*st;if(rush.checked)p*=1.5;
+lv.textContent=Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);t.textContent='$'+Math.round(p);
+w.textContent=x.dataset.name+' · '+lv.textContent+(extra?' · +'+extra+' extra step'+(extra>1?'s':''):' · base price')+(rush.checked?' · rush':'')}
 b.forEach(function(x){x.addEventListener('click',function(){b.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');f()})});
 len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 </script>
