@@ -365,9 +365,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
           <h3>Price per video</h3>
           <p class="sub">Pick the type and the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.</p>
           <div class="types" role="group" aria-label="Work type">
-            <button class="mono" data-base="20" data-step="8" data-name="Edit" aria-pressed="false">Edit · from $20</button>
-            <button class="mono" data-base="40" data-step="15" data-name="Motion design" aria-pressed="true">Motion design · from $40</button>
-            <button class="mono" data-base="80" data-step="30" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · from $80</button>
+            <button class="mono" data-base="20" data-step="8" data-max="90" data-name="Edit" aria-pressed="false">Edit · from $20</button>
+            <button class="mono" data-base="40" data-step="15" data-max="120" data-name="Motion design" aria-pressed="true">Motion design · from $40</button>
+            <button class="mono" data-base="80" data-step="30" data-max="90" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · from $80</button>
           </div>
           <label class="mono" for="len"><span>Length</span><span id="lenv">0:30</span></label>
           <input id="len" type="range" min="5" max="120" step="5" value="30">
@@ -543,7 +543,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 (function(){var c=document.getElementById('calc');if(!c)return;var b=[].slice.call(c.querySelectorAll('.types button')),len=c.querySelector('#len'),rush=c.querySelector('#rush'),t=c.querySelector('#total'),w=c.querySelector('#why'),lv=c.querySelector('#lenv');
 function cur(){return b.filter(function(x){return x.getAttribute('aria-pressed')==='true'})[0]}
 var shown=+(t.textContent.replace(/\D/g,''))||0,raf;function tween(to){cancelAnimationFrame(raf);var from=shown,t0=performance.now(),d=350;(function step(n){var k=Math.min(1,(n-t0)/d),e=1-Math.pow(1-k,3);shown=Math.round(from+(to-from)*e);t.textContent='$'+shown;if(k<1)raf=requestAnimationFrame(step)})(t0);t.classList.remove('pop');void t.offsetWidth;t.classList.add('pop')}
-function f(){len.style.setProperty('--p',((len.value-len.min)/(len.max-len.min)*100)+'%');var x=cur(),base=+x.dataset.base,st=+x.dataset.step,sec=+len.value,extra=Math.max(0,Math.ceil((sec-30)/15)),p=base+extra*st;if(rush.checked)p*=1.5;
+function f(){var mx=+cur().dataset.max;if(+len.max!==mx){len.max=mx;if(+len.value>mx)len.value=mx}len.style.setProperty('--p',((len.value-len.min)/(len.max-len.min)*100)+'%');var x=cur(),base=+x.dataset.base,st=+x.dataset.step,sec=+len.value,extra=Math.max(0,Math.ceil((sec-30)/15)),p=base+extra*st;if(rush.checked)p*=1.5;
 lv.textContent=Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);tween(Math.round(p));
 w.textContent=x.dataset.name+' · '+lv.textContent+(extra?' · +'+extra+' extra step'+(extra>1?'s':''):' · base price')+(rush.checked?' · rush':'')}
 b.forEach(function(x){x.addEventListener('click',function(){b.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');f()})});
