@@ -117,6 +117,23 @@ h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;
 .steps span{color:var(--mute)}
 @media (max-width:700px){.steps{grid-template-columns:minmax(0,1fr)}}
 
+/* pricing */
+.pricing{border-top:1px solid var(--line)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px);align-items:stretch}
+.plan{position:relative;border:1px solid var(--line);border-radius:6px;padding:clamp(22px,2.4vw,36px);display:flex;flex-direction:column;gap:14px}
+.plan.pop{border-color:var(--fg);background:#101010}
+.plan .tag{position:absolute;top:-12px;left:24px;background:var(--fg);color:var(--bg);padding:4px 12px;border-radius:999px}
+.plan h3{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:30px;line-height:1}
+.plan .for{margin:0;color:var(--mute);min-height:3.1em}
+.plan .price{margin:6px 0 0;font-family:var(--display);font-weight:700;font-size:clamp(44px,4.4vw,64px);line-height:1}
+.plan .price small{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-right:8px}
+.plan ul{margin:6px 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.plan li{padding-left:22px;position:relative}
+.plan li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:1px;background:var(--fg)}
+.plan .btn{margin-top:auto;justify-content:center}
+.pnote{margin:clamp(24px,3vw,40px) 0 0;color:var(--mute);max-width:60em}
+@media (max-width:900px){.plans{grid-template-columns:minmax(0,1fr)}.plan .for{min-height:0}}
+
 /* contact */
 .contact{background:var(--fg);color:var(--bg)}
 .contact h2{font-size:clamp(40px,8vw,104px)}
@@ -157,6 +174,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
     <nav class="nav mono" aria-label="Sections">
       <a class="hide-s" href="#work">Work</a>
       <a class="hide-s" href="#services">Services</a>
+      <a class="hide-s" href="#pricing">Pricing</a>
       <a class="pill" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Telegram ↗</a>
     </nav>
   </div>
@@ -309,6 +327,36 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
         <li><strong>Draft</strong><span>I send a first version. You tell me what to change.</span></li>
         <li><strong>Delivery</strong><span>I deliver the final file in the format you need.</span></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing" aria-labelledby="pr-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="pr-h">Pricing</h2><span class="mono mute">Final price depends on length and complexity</span></div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Basic</h3>
+          <p class="for">A short edit or a simple animated clip.</p>
+          <p class="price"><small>from</small>$30</p>
+          <ul><li>Up to 15 seconds</li><li>Cut to music, transitions, color</li><li>1 round of revisions</li><li>Delivery in 2–3 days</li></ul>
+          <a class="btn" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
+        </article>
+        <article class="plan pop"><span class="tag mono">Popular</span>
+          <h3>Standard</h3>
+          <p class="for">Promo video or a full edit with custom motion.</p>
+          <p class="price"><small>from</small>$80</p>
+          <ul><li>Up to 30 seconds</li><li>Custom motion graphics and type</li><li>Sound design and sync</li><li>2 rounds of revisions</li><li>Vertical and horizontal formats</li><li>Delivery in 4–6 days</li></ul>
+          <a class="btn solid" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
+        </article>
+        <article class="plan">
+          <h3>Premium</h3>
+          <p class="for">Brand intro, ad spot or complex animation.</p>
+          <p class="price"><small>from</small>$180</p>
+          <ul><li>Up to 60 seconds</li><li>3D and advanced animation (Blender)</li><li>Full sound design</li><li>3 rounds of revisions</li><li>All formats and project files</li><li>Priority delivery</li></ul>
+          <a class="btn" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
+        </article>
+        </div>
+      <p class="pnote">Work starts after a 50% prepayment. Rush delivery +50%. Not sure which fits? Message me with your idea and I will suggest a plan and a price.</p>
     </div>
   </section>
 
