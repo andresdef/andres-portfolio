@@ -141,13 +141,14 @@ h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;
 .calc h3{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:30px;line-height:1}
 .calc .sub{margin:0 0 22px;color:var(--mute)}
 .types{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-.types button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
-.types button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.types button{transition:background .2s,color .2s,border-color .2s,transform .15s;border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
+.types button:hover{border-color:var(--fg)}.types button:active{transform:scale(.96)}.types button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .calc label{display:flex;justify-content:space-between;margin-bottom:10px}
 .calc input[type=range]{width:100%;accent-color:#fff}
 .calc label.rush{justify-content:flex-start;align-items:center;gap:10px;margin:22px 0 0;cursor:pointer}
 .res .big{font-family:var(--display);font-weight:700;font-size:clamp(56px,6vw,96px);line-height:1}
 .res .mono{opacity:.65}
+.res .big.pop{animation:bump .35s ease-out}@keyframes bump{40%{transform:scale(1.06)}}@media (prefers-reduced-motion:reduce){.res .big.pop{animation:none}}
 .res .btn{border-color:var(--bg);margin-top:auto;justify-content:center}
 .res .btn.solid{background:var(--bg);color:var(--fg)}
 @media (max-width:900px){.calc{grid-template-columns:minmax(0,1fr)}}
@@ -533,8 +534,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 <script>
 (function(){var c=document.getElementById('calc');if(!c)return;var b=[].slice.call(c.querySelectorAll('.types button')),len=c.querySelector('#len'),rush=c.querySelector('#rush'),t=c.querySelector('#total'),w=c.querySelector('#why'),lv=c.querySelector('#lenv');
 function cur(){return b.filter(function(x){return x.getAttribute('aria-pressed')==='true'})[0]}
+var shown=+(t.textContent.replace(/\D/g,''))||0,raf;function tween(to){cancelAnimationFrame(raf);var from=shown,t0=performance.now(),d=350;(function step(n){var k=Math.min(1,(n-t0)/d),e=1-Math.pow(1-k,3);shown=Math.round(from+(to-from)*e);t.textContent='$'+shown;if(k<1)raf=requestAnimationFrame(step)})(t0);t.classList.remove('pop');void t.offsetWidth;t.classList.add('pop')}
 function f(){var x=cur(),base=+x.dataset.base,st=+x.dataset.step,sec=+len.value,extra=Math.max(0,Math.ceil((sec-30)/15)),p=base+extra*st;if(rush.checked)p*=1.5;
-lv.textContent=Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);t.textContent='$'+Math.round(p);
+lv.textContent=Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);tween(Math.round(p));
 w.textContent=x.dataset.name+' · '+lv.textContent+(extra?' · +'+extra+' extra step'+(extra>1?'s':''):' · base price')+(rush.checked?' · rush':'')}
 b.forEach(function(x){x.addEventListener('click',function(){b.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');f()})});
 len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
