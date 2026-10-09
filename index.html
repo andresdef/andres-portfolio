@@ -207,6 +207,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
   </div>
 </header>
 
+<script>
+try{history.scrollRestoration='manual'}catch(e){}
+if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(function(){window.scrollTo(0,0)},60)});
+</script>
 <main id="top">
   <div class="wrap hero">
     <div class="hero-reel" aria-hidden="true">
