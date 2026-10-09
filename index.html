@@ -140,8 +140,8 @@ h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;
 .calc .res{background:var(--fg);color:var(--bg);display:flex;flex-direction:column;gap:10px}
 .calc h3{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:30px;line-height:1}
 .calc .sub{margin:0 0 22px;color:var(--mute)}
-.types{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-.types button{transition:background .2s,color .2s,border-color .2s,transform .15s;border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
+.types{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+.types button{font-size:15px;padding:18px 28px;flex:1 1 220px;text-align:center;transition:background .2s,color .2s,border-color .2s,transform .15s;border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
 .types button:hover{border-color:var(--fg)}.types button:active{transform:scale(.96)}.types button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .calc label{display:flex;justify-content:space-between;margin-bottom:10px}
 .calc input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;--p:0%;margin:0}
@@ -367,7 +367,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
           <div class="types" role="group" aria-label="Work type">
             <button class="mono" data-base="20" data-step="8" data-max="90" data-name="Edit" aria-pressed="false">Edit · from $20</button>
             <button class="mono" data-base="27" data-step="10" data-max="120" data-name="Motion design" aria-pressed="true">Motion design · from $27</button>
-            <button class="mono" data-base="53" data-step="20" data-max="90" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · from $53</button>
           </div>
           <label class="mono" for="len"><span>Length</span><span id="lenv">0:30</span></label>
           <input id="len" type="range" min="5" max="120" step="5" value="30">
