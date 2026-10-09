@@ -242,10 +242,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
       </div>
 
       <div class="filters" role="group" aria-label="Filter work by category">
-        <button class="filter mono" type="button" data-filter="All" aria-pressed="true">All <span class="n" data-count="All">6</span></button>
-        <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="false">Motion Design <span class="n" data-count="Motion Design">2</span></button>
+        <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="true">Motion Design <span class="n" data-count="Motion Design">2</span></button>
         <button class="filter mono" type="button" data-filter="Edits" aria-pressed="false">Edits <span class="n" data-count="Edits">2</span></button>
         <button class="filter mono" type="button" data-filter="Breakcore" aria-pressed="false">Breakcore <span class="n" data-count="Breakcore">2</span></button>
+        <button class="filter mono" type="button" data-filter="All" aria-pressed="false">All <span class="n" data-count="All">6</span></button>
       </div>
 
       <div class="grid" id="grid">
@@ -448,6 +448,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
     filters.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.filter===f))});
   }
   filters.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.filter)})});
+  apply('Motion Design');
 
   // previews: pause when the visitor prefers reduced motion
   var vids=[].slice.call(document.querySelectorAll('.frame video'));
