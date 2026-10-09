@@ -19,7 +19,7 @@
   --display:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;
   --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
-  --row-h:460px;
+  --row-h:400px;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -36,7 +36,7 @@ button{font:inherit;color:inherit}
 /* header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,10,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
-.mark{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.04em;text-decoration:none;line-height:1}
+.mark{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.04em;text-decoration:none;line-height:1}
 .nav{display:flex;align-items:center;gap:clamp(14px,3vw,32px)}
 .nav a{text-decoration:none}
 .nav a:hover{text-decoration:underline;text-underline-offset:4px}
@@ -47,7 +47,7 @@ button{font:inherit;color:inherit}
 /* hero */
 .hero{padding-block:clamp(40px,8vw,96px) clamp(32px,5vw,56px)}
 .eyebrow{margin:0 0 20px}
-h1{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:.005em;font-size:clamp(52px,13.5vw,176px);text-wrap:balance}
+h1{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;line-height:.92;letter-spacing:.01em;font-size:clamp(40px,9vw,120px);text-wrap:balance}
 h1 span{display:block}
 h1 .line-out{color:transparent;-webkit-text-stroke:2px var(--fg)}
 .hero-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);margin-top:clamp(28px,4vw,48px);align-items:end}
@@ -63,21 +63,21 @@ h1 .line-out{color:transparent;-webkit-text-stroke:2px var(--fg)}
 /* marquee */
 .strip{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding-block:14px}
 .strip-track{display:inline-flex;gap:0;animation:slide 38s linear infinite}
-.strip-track span{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.06em;text-transform:uppercase;padding-inline:22px}
+.strip-track span{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.06em;text-transform:uppercase;padding-inline:22px}
 .strip-track span:nth-child(even){color:var(--mute)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
 /* work */
-section{padding-block:clamp(56px,8vw,104px)}
+section{padding-block:clamp(72px,10vw,136px)}
 .sec-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:clamp(24px,3vw,40px)}
-h2{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(40px,7vw,84px);line-height:.9;letter-spacing:.01em}
+h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(32px,5vw,60px);line-height:.95;letter-spacing:.01em}
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(24px,3vw,36px)}
 .filter{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 16px;cursor:pointer}
 .filter:hover{border-color:var(--fg)}
 .filter[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .filter .n{font-family:var(--mono);font-size:11px;opacity:.7}
 
-.grid{display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);align-items:flex-start}
+.grid{display:flex;flex-wrap:wrap;gap:clamp(36px,5vw,72px) clamp(28px,4vw,56px);align-items:flex-start}
 .work{width:min(100%,calc(var(--row-h) * var(--ar)))}
 .frame{position:relative;display:block;width:100%;aspect-ratio:var(--ar);padding:0;border:1px solid var(--line);background:#000;cursor:pointer;overflow:hidden;border-radius:4px}
 .frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -99,7 +99,7 @@ h2{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;
 .svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
 .svc article{padding:28px 28px 32px 0;display:flex;flex-direction:column;gap:12px}
 .svc article+article{padding-left:28px;border-left:1px solid var(--line)}
-.svc h3{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:34px;line-height:1}
+.svc h3{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:34px;line-height:1}
 .svc p{margin:0;color:var(--mute)}
 .svc a{margin-top:auto;padding-top:10px;text-decoration:none;border-bottom:1px solid var(--fg);align-self:flex-start;padding-bottom:2px}
 @media (max-width:860px){
@@ -116,7 +116,7 @@ h2{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;
 
 /* contact */
 .contact{background:var(--fg);color:var(--bg)}
-.contact h2{font-size:clamp(48px,11vw,150px)}
+.contact h2{font-size:clamp(40px,8vw,104px)}
 .contact .row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:clamp(24px,4vw,40px)}
 .contact .btn{border-color:var(--bg)}
 .contact .btn.solid{background:var(--bg);color:var(--fg)}
@@ -170,7 +170,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
         <a class="btn" href="#work">See the work ↓</a>
       </div>
     </div>
-    <p class="tools mono mute"><span>DaVinci Resolve</span><span>Fusion</span><span>Figma</span></p>
+    <p class="tools mono mute"><span>DaVinci Resolve</span><span>Fusion</span><span>Figma</span><span>Blender</span><span>Animation</span></p>
   </div>
 
   <div class="strip" aria-hidden="true">
