@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Andres Motion Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: black stage, white type. Work frames follow each video's own aspect ratio, so nothing is cropped or letterboxed. */
+:root{
+  --bg:#0a0a0a;
+  --fg:#f2f2f2;
+  --mute:#8f8f8f;
+  --line:#262626;
+  --panel:#121212;
+  --display:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --row-h:460px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.mute{color:var(--mute)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,10,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.mark{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.04em;text-decoration:none;line-height:1}
+.nav{display:flex;align-items:center;gap:clamp(14px,3vw,32px)}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.nav .pill{border:1px solid var(--fg);padding:8px 14px;border-radius:999px}
+.nav .pill:hover{background:var(--fg);color:var(--bg);text-decoration:none}
+@media (max-width:560px){.nav .hide-s{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(40px,8vw,96px) clamp(32px,5vw,56px)}
+.eyebrow{margin:0 0 20px}
+h1{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:.005em;font-size:clamp(52px,13.5vw,176px);text-wrap:balance}
+h1 span{display:block}
+h1 .line-out{color:transparent;-webkit-text-stroke:2px var(--fg)}
+.hero-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);margin-top:clamp(28px,4vw,48px);align-items:end}
+.lede{margin:0;font-size:clamp(17px,2vw,21px);max-width:34em}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+@media (max-width:760px){.hero-row{grid-template-columns:minmax(0,1fr)}.hero-actions{justify-content:flex-start}}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;border:1px solid var(--fg);text-decoration:none;font-weight:600;background:transparent;cursor:pointer;line-height:1}
+.btn:hover{background:var(--fg);color:var(--bg)}
+.btn.solid{background:var(--fg);color:var(--bg)}
+.btn.solid:hover{background:transparent;color:var(--fg)}
+.tools{margin:clamp(28px,4vw,44px) 0 0;display:flex;flex-wrap:wrap;gap:8px 20px}
+
+/* marquee */
+.strip{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding-block:14px}
+.strip-track{display:inline-flex;gap:0;animation:slide 38s linear infinite}
+.strip-track span{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.06em;text-transform:uppercase;padding-inline:22px}
+.strip-track span:nth-child(even){color:var(--mute)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* work */
+section{padding-block:clamp(56px,8vw,104px)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:clamp(24px,3vw,40px)}
+h2{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(40px,7vw,84px);line-height:.9;letter-spacing:.01em}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(24px,3vw,36px)}
+.filter{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 16px;cursor:pointer}
+.filter:hover{border-color:var(--fg)}
+.filter[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.filter .n{font-family:var(--mono);font-size:11px;opacity:.7}
+
+.grid{display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,32px);align-items:flex-start}
+.work{width:min(100%,calc(var(--row-h) * var(--ar)))}
+.frame{position:relative;display:block;width:100%;aspect-ratio:var(--ar);padding:0;border:1px solid var(--line);background:#000;cursor:pointer;overflow:hidden;border-radius:4px}
+.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.frame:hover{border-color:var(--fg)}
+.chip{position:absolute;left:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;background:var(--fg);color:var(--bg);padding:8px 14px 8px 10px;border-radius:999px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;transition:transform .2s}
+.chip svg{width:14px;height:14px;display:block}
+.frame:hover .chip{transform:translateY(-3px)}
+.meta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;padding-top:14px}
+.meta h3{margin:0;font-size:20px;font-weight:600;line-height:1.25}
+.meta .len{font-family:var(--mono);font-size:12px;color:var(--mute);align-self:center}
+.meta p{grid-column:1/-1;margin:2px 0 0;color:var(--mute);max-width:34em}
+.meta .cat{grid-column:1/-1;margin-top:8px}
+.empty{border:1px dashed var(--line);border-radius:4px;padding:clamp(28px,5vw,56px);max-width:640px}
+.empty h3{margin:0 0 8px;font-family:var(--display);font-weight:900;font-size:34px;text-transform:uppercase}
+.empty p{margin:0 0 20px;color:var(--mute)}
+
+/* services */
+.services{border-top:1px solid var(--line)}
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.svc article{padding:28px 28px 32px 0;display:flex;flex-direction:column;gap:12px}
+.svc article+article{padding-left:28px;border-left:1px solid var(--line)}
+.svc h3{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:34px;line-height:1}
+.svc p{margin:0;color:var(--mute)}
+.svc a{margin-top:auto;padding-top:10px;text-decoration:none;border-bottom:1px solid var(--fg);align-self:flex-start;padding-bottom:2px}
+@media (max-width:860px){
+  .svc{grid-template-columns:minmax(0,1fr)}
+  .svc article,.svc article+article{padding:24px 0;border-left:0}
+  .svc article+article{border-top:1px solid var(--line)}
+}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(40px,6vw,72px);padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border-top:1px solid var(--fg);padding-top:14px}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--mute)}
+.steps strong{display:block;font-size:19px;margin:4px 0 4px}
+.steps span{color:var(--mute)}
+@media (max-width:700px){.steps{grid-template-columns:minmax(0,1fr)}}
+
+/* contact */
+.contact{background:var(--fg);color:var(--bg)}
+.contact h2{font-size:clamp(48px,11vw,150px)}
+.contact .row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:clamp(24px,4vw,40px)}
+.contact .btn{border-color:var(--bg)}
+.contact .btn.solid{background:var(--bg);color:var(--fg)}
+.contact .btn.solid:hover{background:transparent;color:var(--bg)}
+.contact .btn:not(.solid):hover{background:var(--bg);color:var(--fg)}
+.contact :focus-visible{outline-color:var(--bg)}
+.contact .handle{font-family:var(--mono);font-size:14px}
+.contact p{margin:16px 0 0;max-width:36em}
+footer{padding-block:24px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
+
+/* player */
+.stage{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.stage video{display:block;background:#000;width:min(92vw,calc(78vh * var(--ar)),1180px);aspect-ratio:var(--ar);height:auto;max-height:78vh;border:1px solid var(--line)}
+.stage-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(92vw,calc(78vh * var(--ar)),1180px)}
+.stage-bar h4{margin:0;font-size:16px;font-weight:600}
+.stage-bar .ctl{display:flex;gap:8px}
+.ico{border:1px solid var(--line);background:transparent;border-radius:999px;padding:8px 14px;cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.ico:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.ico[disabled]{opacity:.35;pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .strip-track{animation:none}
+  .chip{transition:none}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Andres, back to top">ANDRES</a>
+    <nav class="nav mono" aria-label="Sections">
+      <a class="hide-s" href="#work">Work</a>
+      <a class="hide-s" href="#services">Services</a>
+      <a class="pill" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Telegram ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <p class="eyebrow mono mute">Freelance motion designer and video editor</p>
+    <h1><span>Motion design</span><span class="line-out">Edits</span><span>Breakcore</span></h1>
+    <div class="hero-row">
+      <p class="lede">Promo videos, animated intros and rhythm-driven edits. Sound is half of the work, so every video on this page plays with sound.</p>
+      <div class="hero-actions">
+        <a class="btn solid" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Message me on Telegram ↗</a>
+        <a class="btn" href="#work">See the work ↓</a>
+      </div>
+    </div>
+    <p class="tools mono mute"><span>DaVinci Resolve</span><span>Fusion</span><span>Figma</span></p>
+  </div>
+
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track">
+      <span>Motion design</span><span>/</span><span>Edits</span><span>/</span><span>Breakcore</span><span>/</span><span>Motion design</span><span>/</span><span>Edits</span><span>/</span><span>Breakcore</span><span>/</span>
+      <span>Motion design</span><span>/</span><span>Edits</span><span>/</span><span>Breakcore</span><span>/</span><span>Motion design</span><span>/</span><span>Edits</span><span>/</span><span>Breakcore</span><span>/</span>
+    </div>
+  </div>
+
+  <section id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="work-h">Selected work</h2>
+        <p class="mono mute" style="margin:0">Click a video to play it with sound</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter work by category">
+        <button class="filter mono" type="button" data-filter="All" aria-pressed="true">All <span class="n" data-count="All">6</span></button>
+        <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="false">Motion Design <span class="n" data-count="Motion Design">2</span></button>
+        <button class="filter mono" type="button" data-filter="Edits" aria-pressed="false">Edits <span class="n" data-count="Edits">2</span></button>
+        <button class="filter mono" type="button" data-filter="Breakcore" aria-pressed="false">Breakcore <span class="n" data-count="Breakcore">2</span></button>
+      </div>
+
+      <div class="grid" id="grid">
+        <article class="work" data-cat="Motion Design" data-title="Don Coptilio" style="--ar:0.5625">
+          <button class="frame" type="button" data-src="media/don-coptilio.mp4" data-ar="0.5625" aria-label="Play Don Coptilio promo with sound">
+            <video src="media/don-coptilio.mp4" poster="media/don-coptilio.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Don Coptilio</h3><span class="len">0:21</span>
+            <p>Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.</p>
+            <span class="cat mono mute">Motion Design</span>
+          </div>
+        </article>
+
+        <article class="work" data-cat="Motion Design" data-title="Yeay Corporation" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/yeay-corporation.mp4" data-ar="1.7778" aria-label="Play Yeay Corporation intro with sound">
+            <video src="media/yeay-corporation.mp4" poster="media/yeay-corporation.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Yeay Corporation</h3><span class="len">0:14</span>
+            <p>Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.</p>
+            <span class="cat mono mute">Motion Design</span>
+          </div>
+        </article>
+
+        <article class="work" data-cat="Edits" data-title="Second Son" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/second-son.mp4" data-ar="1.7778" aria-label="Play Second Son edit with sound">
+            <video src="media/second-son.mp4" poster="media/second-son.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Second Son</h3><span class="len">0:20</span>
+            <p>Y2K collage edit about inFAMOUS Second Son: character cards, stickers and bright color blocks.</p>
+            <span class="cat mono mute">Edits</span>
+          </div>
+        </article>
+
+        <article class="work" data-cat="Edits" data-title="Yamato" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/yamato-zayka.mp4" data-ar="1.7778" aria-label="Play Yamato edit with sound">
+            <video src="media/yamato-zayka.mp4" poster="media/yamato-zayka.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Yamato</h3><span class="len">0:20</span>
+            <p>Red and black blade edit with Japanese titles, film grain and hard cuts on the beat.</p>
+            <span class="cat mono mute">Edits</span>
+          </div>
+        </article>
+
+        <article class="work" data-cat="Breakcore" data-title="Dream Baku Core" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/dream-baku-core.mp4" data-ar="1.7778" aria-label="Play Dream Baku Core edit with sound">
+            <video src="media/dream-baku-core.mp4" poster="media/dream-baku-core.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Dream Baku Core</h3><span class="len">0:19</span>
+            <p>Dreamcore breakcore edit: neon wireframe Flame Towers, retro system pop-ups, geometry and music notes.</p>
+            <span class="cat mono mute">Breakcore</span>
+          </div>
+        </article>
+
+        <article class="work" data-cat="Breakcore" data-title="Baku" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/baku-edit.mp4" data-ar="1.7778" aria-label="Play Baku edit with sound">
+            <video src="media/baku-edit.mp4" poster="media/baku-edit.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>Baku</h3><span class="len">0:16</span>
+            <p>City edit about Baku and the Caspian Sea: 3D wireframes, flying type and fast cuts to the track.</p>
+            <span class="cat mono mute">Breakcore</span>
+          </div>
+        </article>
+
+        <div class="empty" id="empty" hidden>
+          <h3 id="empty-h">More coming</h3>
+          <p id="empty-p">New work is being added here.</p>
+          <a class="btn solid" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Ask for samples on Telegram ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services" aria-labelledby="svc-h">
+    <div class="wrap">
+      <div class="sec-head"><h2 id="svc-h">What I make</h2></div>
+      <div class="svc">
+        <article>
+          <h3>Motion design for business</h3>
+          <p>Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.</p>
+          <a class="mono" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Get a quote ↗</a>
+        </article>
+        <article>
+          <h3>Video edits</h3>
+          <p>Edits for YouTube, TikTok, Reels and Shorts, cut to the music, with motion blur on every transition.</p>
+          <a class="mono" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Get a quote ↗</a>
+        </article>
+        <article>
+          <h3>Breakcore edits</h3>
+          <p>Fast, hard-cut edits driven by the sound: heavy rhythm, glitch and speed changes.</p>
+          <a class="mono" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Get a quote ↗</a>
+        </article>
+      </div>
+      <ol class="steps">
+        <li><strong>Brief</strong><span>You send the idea, references and any assets. I reply with a plan and a price.</span></li>
+        <li><strong>Draft</strong><span>I send a first version. You tell me what to change.</span></li>
+        <li><strong>Delivery</strong><span>I deliver the final file in the format you need.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="ct-h">
+    <div class="wrap">
+      <h2 id="ct-h">Let's make<br>it move</h2>
+      <p>Write to me with what you need and where it will be published. I answer on Telegram.</p>
+      <div class="row">
+        <a class="btn solid" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Message me on Telegram ↗</a>
+        <span class="handle" id="handle">@andres_de_f</span>
+        <button class="btn" type="button" id="copy">Copy</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap mono mute"><span>© 2026 Andres</span><span>Open for freelance orders</span></div>
+</footer>
+
+<div class="stage" id="stage" hidden role="dialog" aria-modal="true" aria-labelledby="stage-title">
+  <video id="player" controls playsinline preload="auto"></video>
+  <div class="stage-bar">
+    <h4 id="stage-title"></h4>
+    <div class="ctl">
+      <button class="ico" type="button" id="prev" aria-label="Previous video">Prev</button>
+      <button class="ico" type="button" id="next" aria-label="Next video">Next</button>
+      <button class="ico" type="button" id="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var works=[].slice.call(document.querySelectorAll('.work'));
+  var filters=[].slice.call(document.querySelectorAll('.filter'));
+  var empty=document.getElementById('empty');
+  var emptyH=document.getElementById('empty-h');
+  var emptyP=document.getElementById('empty-p');
+  var current='All';
+
+  var emptyCopy={
+    'Edits':['Edits are on the way','More edits are being added to this page. Ask me on Telegram and I will send samples.'],
+    'Breakcore':['Breakcore is on the way','Breakcore edits are being added to this page. Ask me on Telegram and I will send samples.']
+  };
+
+  // live counts from the markup
+  ['All','Motion Design','Edits','Breakcore'].forEach(function(c){
+    var n=c==='All'?works.length:works.filter(function(w){return w.dataset.cat===c}).length;
+    var el=document.querySelector('[data-count="'+c+'"]');
+    if(el) el.textContent=n;
+  });
+
+  function visibleWorks(){return works.filter(function(w){return !w.hidden})}
+
+  function apply(f){
+    current=f;
+    works.forEach(function(w){w.hidden=!(f==='All'||w.dataset.cat===f)});
+    var n=visibleWorks().length;
+    empty.hidden=n>0;
+    if(n===0){
+      var c=emptyCopy[f]||['More coming','New work is being added here.'];
+      emptyH.textContent=c[0];emptyP.textContent=c[1];
+    }
+    filters.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.filter===f))});
+  }
+  filters.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.filter)})});
+
+  // previews: pause when the visitor prefers reduced motion
+  var vids=[].slice.call(document.querySelectorAll('.frame video'));
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    vids.forEach(function(v){v.removeAttribute('autoplay');v.pause()});
+  }
+
+  // player
+  var stage=document.getElementById('stage');
+  var player=document.getElementById('player');
+  var title=document.getElementById('stage-title');
+  var prev=document.getElementById('prev');
+  var next=document.getElementById('next');
+  var closeBtn=document.getElementById('close');
+  var opener=null;
+  var idx=0;
+
+  function show(i){
+    var list=visibleWorks();
+    if(!list.length) return;
+    idx=(i+list.length)%list.length;
+    var w=list[idx];
+    var f=w.querySelector('.frame');
+    stage.style.setProperty('--ar',f.dataset.ar);
+    title.textContent=w.dataset.title;
+    player.src=f.dataset.src;
+    player.muted=false;
+    player.volume=1;
+    player.currentTime=0;
+    var p=player.play();
+    if(p&&p.catch){p.catch(function(){/* controls stay visible, viewer can press play */})}
+    prev.disabled=next.disabled=list.length<2;
+  }
+
+  function open(frame){
+    opener=frame;
+    var list=visibleWorks();
+    var w=frame.closest('.work');
+    stage.hidden=false;
+    document.body.style.overflow='hidden';
+    show(list.indexOf(w));
+    closeBtn.focus();
+  }
+
+  function close(){
+    player.pause();
+    player.removeAttribute('src');
+    player.load();
+    stage.hidden=true;
+    document.body.style.overflow='';
+    if(opener) opener.focus();
+  }
+
+  [].slice.call(document.querySelectorAll('.frame')).forEach(function(f){
+    f.addEventListener('click',function(){open(f)});
+  });
+  closeBtn.addEventListener('click',close);
+  prev.addEventListener('click',function(){show(idx-1)});
+  next.addEventListener('click',function(){show(idx+1)});
+  stage.addEventListener('click',function(e){if(e.target===stage) close()});
+  document.addEventListener('keydown',function(e){
+    if(stage.hidden) return;
+    if(e.key==='Escape'){close();return}
+    if(e.key==='ArrowRight'&&document.activeElement!==player){show(idx+1)}
+    if(e.key==='ArrowLeft'&&document.activeElement!==player){show(idx-1)}
+    if(e.key==='Tab'){
+      var f=[].slice.call(stage.querySelectorAll('button:not([disabled]),video'));
+      if(!f.length) return;
+      var first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
+  });
+
+  // copy handle
+  var copy=document.getElementById('copy');
+  var handle=document.getElementById('handle');
+  copy.addEventListener('click',function(){
+    function done(t){copy.textContent=t;setTimeout(function(){copy.textContent='Copy'},1600)}
+    function fallback(){
+      var r=document.createRange();r.selectNodeContents(handle);
+      var s=window.getSelection();s.removeAllRanges();s.addRange(r);
+      done('Selected');
+    }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText('@andres_de_f').then(function(){done('Copied')},fallback);
+    }else{fallback()}
+  });
+})();
+</script>
+
+</body>
+</html>
