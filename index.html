@@ -134,6 +134,24 @@ h2{margin:0;font-family:var(--display);font-weight:700;text-transform:uppercase;
 .pnote{margin:clamp(24px,3vw,40px) 0 0;color:var(--mute);max-width:60em}
 @media (max-width:900px){.plans{grid-template-columns:minmax(0,1fr)}.plan .for{min-height:0}}
 
+/* per-minute calc */
+.calc{margin-top:clamp(40px,5vw,72px);border:1px solid var(--line);border-radius:6px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);overflow:hidden}
+.calc>div{padding:clamp(22px,2.6vw,40px)}
+.calc .res{background:var(--fg);color:var(--bg);display:flex;flex-direction:column;gap:10px}
+.calc h3{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:30px;line-height:1}
+.calc .sub{margin:0 0 22px;color:var(--mute)}
+.types{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.types button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
+.types button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.calc label{display:flex;justify-content:space-between;margin-bottom:10px}
+.calc input[type=range]{width:100%;accent-color:#fff}
+.calc label.rush{justify-content:flex-start;align-items:center;gap:10px;margin:22px 0 0;cursor:pointer}
+.res .big{font-family:var(--display);font-weight:700;font-size:clamp(56px,6vw,96px);line-height:1}
+.res .mono{opacity:.65}
+.res .btn{border-color:var(--bg);margin-top:auto;justify-content:center}
+.res .btn.solid{background:var(--bg);color:var(--fg)}
+@media (max-width:900px){.calc{grid-template-columns:minmax(0,1fr)}}
+
 /* contact */
 .contact{background:var(--fg);color:var(--bg)}
 .contact h2{font-size:clamp(40px,8vw,104px)}
@@ -356,6 +374,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
           <a class="btn" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
         </article>
         </div>
+      <div class="calc" id="calc">
+        <div>
+          <h3>Or pay per minute</h3>
+          <p class="sub">Pick the type, set the length, see the estimate. Minimum order applies.</p>
+          <div class="types" role="group" aria-label="Work type">
+            <button class="mono" data-rate="40" data-min="30" data-name="Edit" aria-pressed="false">Edit · $40/min</button>
+            <button class="mono" data-rate="120" data-min="60" data-name="Motion design" aria-pressed="true">Motion design · $120/min</button>
+            <button class="mono" data-rate="250" data-min="120" data-name="Animation / 3D" aria-pressed="false">Animation / 3D · $250/min</button>
+          </div>
+          <label class="mono" for="len"><span>Length</span><span id="lenv">0:30</span></label>
+          <input id="len" type="range" min="5" max="300" step="5" value="30">
+          <label class="rush mono"><input id="rush" type="checkbox"> Rush delivery (+50%)</label>
+        </div>
+        <div class="res">
+          <span class="mono">Estimate</span>
+          <div class="big" id="total">$60</div>
+          <span class="mono" id="why">Motion design · 0:30 · minimum order $60</span>
+          <a class="btn solid" id="ord" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Order on Telegram ↗</a>
+        </div>
+      </div>
       <p class="pnote">Work starts after a 50% prepayment. Rush delivery +50%. Not sure which fits? Message me with your idea and I will suggest a plan and a price.</p>
     </div>
   </section>
@@ -515,5 +553,14 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 })();
 </script>
 
+<script>
+(function(){var c=document.getElementById('calc');if(!c)return;var b=[].slice.call(c.querySelectorAll('.types button')),len=c.querySelector('#len'),rush=c.querySelector('#rush'),t=c.querySelector('#total'),w=c.querySelector('#why'),lv=c.querySelector('#lenv');
+function cur(){return b.filter(function(x){return x.getAttribute('aria-pressed')==='true'})[0]}
+function f(){var x=cur(),r=+x.dataset.rate,m=+x.dataset.min,s=+len.value,p=Math.max(s/60*r,m),minHit=s/60*r<m;if(rush.checked)p*=1.5;
+lv.textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2);t.textContent='$'+Math.round(p);
+w.textContent=x.dataset.name+' · '+lv.textContent+(minHit?' · minimum order $'+m:'')+(rush.checked?' · rush':'')}
+b.forEach(function(x){x.addEventListener('click',function(){b.forEach(function(y){y.setAttribute('aria-pressed','false')});x.setAttribute('aria-pressed','true');f()})});
+len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
+</script>
 </body>
 </html>
