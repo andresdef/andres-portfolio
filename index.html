@@ -468,10 +468,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 
   // previews: pause when the visitor prefers reduced motion
   var vids=[].slice.call(document.querySelectorAll('.frame video'));
-  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    vids.forEach(function(v){v.removeAttribute('autoplay');v.pause()});
-  }
-  else{
+  {
     // keep every visible preview playing (autoplay can be skipped by browsers, or after a filter change)
     var vis=new Map();
     function kick(v){v.muted=true;v.defaultMuted=true;var p=v.play();if(p&&p.catch)p.catch(function(){})}
