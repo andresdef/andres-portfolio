@@ -471,6 +471,20 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
     vids.forEach(function(v){v.removeAttribute('autoplay');v.pause()});
   }
+  else{
+    // keep every visible preview playing (autoplay can be skipped by browsers, or after a filter change)
+    var vis=new Map();
+    function kick(v){v.muted=true;v.defaultMuted=true;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+    function sync(){vids.forEach(function(v){if(vis.get(v)&&!v.closest('[hidden]')){if(v.paused)kick(v)}else if(!v.paused&&!v.closest('#stage')){v.pause()}})}
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){vis.set(e.target,e.isIntersecting)});sync()},{threshold:.15});
+      vids.forEach(function(v){io.observe(v)});
+    }else{vids.forEach(function(v){vis.set(v,true)})}
+    filters.forEach(function(b){b.addEventListener('click',function(){setTimeout(sync,80)})});
+    ['pointerdown','keydown','scroll','touchstart'].forEach(function(ev){window.addEventListener(ev,sync,{once:true,passive:true})});
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)sync()});
+    window.addEventListener('load',function(){setTimeout(sync,200)});
+  }
 
   // player
   var stage=document.getElementById('stage');
