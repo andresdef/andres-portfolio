@@ -248,8 +248,8 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 
       <div class="filters" role="group" aria-label="Filter work by category">
         <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="true">Motion Design <span class="n" data-count="Motion Design">5</span></button>
-        <button class="filter mono" type="button" data-filter="Edits" aria-pressed="false">Edits <span class="n" data-count="Edits">2</span></button>
-        <button class="filter mono" type="button" data-filter="Breakcore" aria-pressed="false">Breakcore <span class="n" data-count="Breakcore">2</span></button>
+        <button class="filter mono" type="button" data-filter="Edits" aria-pressed="false">Edits <span class="n" data-count="Edits">4</span></button>
+        <button class="filter mono" type="button" data-filter="3D Models &amp; Design" aria-pressed="false">3D Models &amp; Design <span class="n" data-count="3D Models &amp; Design">0</span></button>
         <button class="filter mono" type="button" data-filter="All" aria-pressed="false">All <span class="n" data-count="All">9</span></button>
       </div>
 
@@ -335,7 +335,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
           </div>
         </article>
 
-        <article class="work" data-cat="Breakcore" data-title="Dream Baku Core" style="--ar:1.7778">
+        <article class="work" data-cat="Edits" data-title="Dream Baku Core" style="--ar:1.7778">
           <button class="frame" type="button" data-src="media/dream-baku-core.mp4" data-ar="1.7778" aria-label="Play Dream Baku Core edit with sound">
             <video src="media/dream-baku-core.mp4" poster="media/dream-baku-core.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
             <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
@@ -343,11 +343,11 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
           <div class="meta">
             <h3>Dream Baku Core</h3><span class="len">0:19</span>
             <p>Dreamcore breakcore edit: neon wireframe Flame Towers, retro system pop-ups, geometry and music notes.</p>
-            <span class="cat mono mute">Breakcore</span>
+            <span class="cat mono mute">Edits</span>
           </div>
         </article>
 
-        <article class="work" data-cat="Breakcore" data-title="Baku" style="--ar:1.7778">
+        <article class="work" data-cat="Edits" data-title="Baku" style="--ar:1.7778">
           <button class="frame" type="button" data-src="media/baku-edit.mp4" data-ar="1.7778" aria-label="Play Baku edit with sound">
             <video src="media/baku-edit.mp4" poster="media/baku-edit.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
             <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
@@ -355,7 +355,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
           <div class="meta">
             <h3>Baku</h3><span class="len">0:16</span>
             <p>City edit about Baku and the Caspian Sea: 3D wireframes, flying type and fast cuts to the track.</p>
-            <span class="cat mono mute">Breakcore</span>
+            <span class="cat mono mute">Edits</span>
           </div>
         </article>
 
@@ -462,11 +462,11 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 
   var emptyCopy={
     'Edits':['Edits are on the way','More edits are being added to this page. Ask me on Telegram and I will send samples.'],
-    'Breakcore':['Breakcore is on the way','Breakcore edits are being added to this page. Ask me on Telegram and I will send samples.']
+    '3D Models & Design':['3D work is on the way','3D models and design are being added to this page. Ask me on Telegram and I will send samples.']
   };
 
   // live counts from the markup
-  ['All','Motion Design','Edits','Breakcore'].forEach(function(c){
+  ['All','Motion Design','Edits','3D Models & Design'].forEach(function(c){
     var n=c==='All'?works.length:works.filter(function(w){return w.dataset.cat===c}).length;
     var el=document.querySelector('[data-count="'+c+'"]');
     if(el) el.textContent=n;
