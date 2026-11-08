@@ -15,7 +15,7 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 ## Files
 
 - `index.html` — the live site. One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework.
-- `v2/index.html` — experimental "cinematic" version (preloader, glass lens over the name, dust particles, scroll-expanding showreel, statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain). `noindex`. Media paths are `../media/...`. Live at `/andres-portfolio/v2/`. The owner likes it; it may replace `index.html` later.
+- `v2/index.html` — experimental "cinematic" version (preloader, glass lens over the name, dust particles, scroll-expanding showreel, statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain, synthesized Web Audio UI sound behind the `#snd` toggle (off by default, ambient ducks while the player is open), WebGL liquid distortion over the hovered preview (fine pointer only), pinned horizontal work gallery at ≥900 px wide via `#work.hg-on`). `noindex`. Media paths are `../media/...`. Live at `/andres-portfolio/v2/`. The owner likes it; it may replace `index.html` later.
   v2 was built from a copy of `index.html`, so content changes (works, prices, texts) must be made in **both** files until v2 is promoted.
 - `media/` — for each work: `name.mp4` (light muted looping preview on the card), `name.jpg` (poster), `name-hq.mp4` (high quality with sound, used in the player). `don-coptilio` and `dream-baku-core` have no `-hq` yet (waiting for originals from the owner).
 

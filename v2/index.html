@@ -335,6 +335,37 @@ h2 .ch{display:inline-block;transition:transform 1.1s var(--ease),filter 1.1s va
 .contact .btn.solid:hover{background:transparent;color:var(--fg)}
 .contact .btn:not(.solid):hover{background:var(--fg);color:var(--bg)}
 .contact p{color:#bdbdbd}
+
+/* sound toggle */
+.nav button.snd{background:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;letter-spacing:.06em}
+.snd .bars{display:inline-flex;align-items:flex-end;gap:2px;height:11px}
+.snd .bars i{display:block;width:2px;height:3px;background:currentColor;transition:height .3s}
+.snd[aria-pressed=true] .bars i{animation:eq .9s ease-in-out infinite}
+.snd[aria-pressed=true] .bars i:nth-child(2){animation-delay:-.35s;animation-duration:.7s}
+.snd[aria-pressed=true] .bars i:nth-child(3){animation-delay:-.6s;animation-duration:1.1s}
+.snd[aria-pressed=true] .bars i:nth-child(4){animation-delay:-.15s;animation-duration:.8s}
+@keyframes eq{0%,100%{height:3px}50%{height:11px}}
+@media (max-width:560px){.snd .snd-t{display:none}.nav button.snd{padding:7px 10px}}
+
+/* liquid hover (WebGL canvas laid over the preview) */
+.frame .liq{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none;transition:opacity .35s,transform 1s var(--ease)}
+.frame .liq.on{opacity:1}
+.frame:hover .liq{transform:scale(1.045)}
+
+/* pinned horizontal gallery (desktop) */
+.hg-bar{display:none}
+#work.hg-on{height:var(--hg-h,300vh);padding:0}
+#work.hg-on>.wrap{position:sticky;top:0;height:100vh;height:100svh;max-width:none;display:flex;flex-direction:column;justify-content:center;justify-content:safe center;padding-top:84px;padding-bottom:20px;overflow:hidden}
+#work.hg-on .sec-head{margin-bottom:16px}
+#work.hg-on .filters{margin-bottom:16px}
+#work.hg-on .hg-bar{display:flex;align-items:center;gap:18px;margin-bottom:clamp(16px,2vw,26px)}
+.hg-line{flex:0 1 420px;height:1px;background:var(--line);position:relative}
+.hg-line i{position:absolute;inset:0;background:var(--fg);transform-origin:left;transform:scaleX(var(--hp,0))}
+#work.hg-on .grid{--card-h:clamp(220px,calc(100svh - 500px),620px);flex-wrap:nowrap;width:max-content;justify-content:flex-start;align-items:flex-start;gap:clamp(28px,3.4vw,64px);will-change:transform}
+#work.hg-on .work{width:max(calc(var(--card-h) * var(--ar)),300px);flex:none}
+#work.hg-on .frame{width:calc(var(--card-h) * var(--ar))}
+#work.hg-on .meta p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#work.hg-on .empty{width:min(640px,80vw);flex:none}
 </style>
 </head>
 <body>
@@ -350,6 +381,7 @@ h2 .ch{display:inline-block;transition:transform 1.1s var(--ease),filter 1.1s va
       <a class="hide-s" href="#work">Work</a>
       <a class="hide-s" href="#services">Services</a>
       <a class="hide-s" href="#pricing">Pricing</a>
+      <button class="pill snd" id="snd" type="button" aria-pressed="false" aria-label="Sound"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="snd-t">Sound</span></button>
       <button class="pill lang" id="lang" type="button" aria-label="Switch language">RU</button>
       <a class="pill" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Telegram ↗</a>
     </nav>
@@ -427,6 +459,8 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
         <button class="filter mono" type="button" data-filter="3D Models &amp; Design" aria-pressed="false">3D Models &amp; Design <span class="n" data-count="3D Models &amp; Design">2</span></button>
         <button class="filter mono" type="button" data-filter="All" aria-pressed="false">All <span class="n" data-count="All">10</span></button>
       </div>
+
+      <div class="hg-bar" aria-hidden="true"><span class="mono" id="hgn">01 / 06</span><span class="hg-line"><i id="hgline"></i></span><span class="mono mute">Scroll to browse →</span></div>
 
       <div class="grid" id="grid">
         <article class="work" data-cat="Motion Design" data-title="Don Coptilio" style="--ar:0.5625">
@@ -815,6 +849,7 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 (function(){
   var D={"Work": "Работы", "Services": "Услуги", "Pricing": "Цены", "Telegram ↗": "Telegram ↗", "Freelance motion designer and video editor": "Фриланс моушн-дизайнер и видеомонтажёр", "Motion design": "Моушн-дизайн", "Edits": "Эдиты", "3D Design": "3D-дизайн", "Promo videos, animated intros and rhythm-driven edits. Sound design is half of the work, so every video on this page plays with sound.": "Промо-ролики, анимированные интро и эдиты в ритм музыке. Саунд-дизайн — половина работы, поэтому каждое видео на этой странице играет со звуком.", "Message me on Telegram ↗": "Написать в Telegram ↗", "See the work ↓": "Смотреть работы ↓", "Order ↓": "Заказать ↓", "Selected work": "Избранные работы", "Click a video to play it with sound": "Нажмите на видео, чтобы включить его со звуком", "Motion Design": "Моушн-дизайн", "3D Models & Design": "3D-модели и дизайн", "All": "Все", "Play with sound": "Смотреть со звуком", "Client work": "Работа для клиента", "Concept · personal project": "Концепт · личный проект", "Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.": "Вертикальная промо-реклама гастропаба в Баку: меню, атмосфера и часы работы в одном ролике.", "Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.": "Анимированное интро для игрового Discord-сервера в инопланетной теме: иконки приложений, свечение и кинетическая типографика.", "Promo for a photo and video production service: app-style UI cards, a shoot planner and bold color bursts.": "Промо для фото- и видеостудии: карточки в стиле приложения, планировщик съёмок и яркие цветовые вспышки.", "Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.": "Анимированная реклама банковской карты: сборка логотипа, развороты карты и быстрая ритмичная череда переходов.", "Animated fashion ad: logo reveal, product carousel and a store-style product card.": "Анимированная модная реклама: появление логотипа, карусель товаров и карточка товара в стиле магазина.", "Motion promo for a coffee brand on a delivery app: logo build, a 3D menu view and drink cards.": "Моушн-промо кофейного бренда в приложении доставки: сборка логотипа, 3D-меню и карточки напитков.", "Y2K collage edit about inFAMOUS Second Son: character cards, stickers and bright color blocks.": "Эдит-коллаж в стиле Y2K по inFAMOUS Second Son: карточки персонажей, стикеры и яркие цветовые блоки.", "Red and black blade edit with Japanese titles, film grain and hard cuts on the beat.": "Красно-чёрный эдит про клинки с японскими титрами, плёночным зерном и резкими склейками в бит.", "Dreamcore edit: neon wireframe Flame Towers, retro system pop-ups, geometry and music notes.": "Эдит в стиле дримкор: неоновые каркасные Flame Towers, ретро-окна системы, геометрия и музыкальные ноты.", "City edit about Baku and the Caspian Sea: 3D wireframes, flying type and fast cuts to the track.": "Городской эдит про Баку и Каспийское море: 3D-каркасы, летящий текст и быстрые склейки под трек.", "More coming": "Скоро будет больше", "New work is being added here.": "Здесь появятся новые работы.", "Ask for samples on Telegram ↗": "Попросить примеры в Telegram ↗", "Edits are on the way": "Эдиты скоро появятся", "More edits are being added to this page. Ask me on Telegram and I will send samples.": "Новые эдиты скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "3D work is on the way": "3D-работы скоро появятся", "3D models and design are being added to this page. Ask me on Telegram and I will send samples.": "3D-модели и дизайн скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "What I make": "Что я делаю", "Motion design for business": "Моушн-дизайн для бизнеса", "Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.": "Промо-ролики, рекламные споты и анимированные интро для магазинов, заведений и сообществ. Делаю во Fusion на основе ваших брендовых материалов.", "Get a quote ↗": "Узнать цену ↗", "Video edits": "Видеомонтаж", "Edits for YouTube, TikTok, Reels and Shorts, cut to the music, with motion blur on every transition.": "Эдиты для YouTube, TikTok, Reels и Shorts, смонтированные под музыку, с моушн-блюром на каждом переходе.", "3D models & design": "3D-модели и дизайн", "3D models and visual design: neon wireframes, stylized geometry and scenes built in Blender.": "3D-модели и визуальный дизайн: неоновые каркасы, стилизованная геометрия и сцены в Blender.", "Brief": "Бриф", "You send the idea, references and any assets. I reply with a plan and a price.": "Вы присылаете идею, референсы и материалы. Я отвечаю планом и ценой.", "Draft": "Черновик", "I send a first version. You tell me what to change.": "Я присылаю первую версию. Вы говорите, что поправить.", "Delivery": "Сдача", "I deliver the final file in the format you need.": "Я отдаю финальный файл в нужном вам формате.", "From €70 per video": "От €70 за видео", "Price per video": "Цена за видео", "Pick the type and the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.": "Выберите тип и длину. Базовая цена покрывает видео до 30 секунд; каждые дополнительные 15 секунд добавляют небольшой шаг.", "Edit · from €70": "Эдит · от €70", "Motion design · from €105": "Моушн-дизайн · от €105", "Length": "Длина", "Rush delivery (+50%)": "Срочная сдача (+50%)", "Estimate": "Оценка", "Order on Telegram ↗": "Заказать в Telegram ↗", "Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.": "Срочная сдача +50%. Оценка — это отправная точка: пришлите мне идею, и я подтвержу окончательную цену.", "Let's make": "Давайте", "it move": "оживим", "Write to me with what you need and where it will be published. I answer on Telegram.": "Напишите, что вам нужно и где ролик будет опубликован. Отвечаю в Telegram.", "Copy": "Копировать", "Copied": "Скопировано", "Selected": "Выделено", "Open for freelance orders": "Открыт для фриланс-заказов", "Prev": "Назад", "Next": "Далее", "Close": "Закрыть", "Edit": "Эдит"};
   Object.assign(D,{"Sound on": "Звук включён", "Scroll": "Листайте", "Every video": "Каждое видео", "plays with sound": "играет со звуком", "About": "Обо мне", "Works on this page": "Работ на странице", "Client brands": "Бренда-клиента", "With sound": "Со звуком", "Play": "Смотреть"});
+  Object.assign(D,{"Sound": "Звук", "Scroll to browse →": "Листайте, чтобы смотреть →"});
   Object.assign(D,{"Place an order": "Оформить заказ", "First name": "Имя", "Last name": "Фамилия", "Phone": "Телефон", "Email": "Почта", "What do you need": "Что вам нужно", "Submit": "Отправить", "Sending…": "Отправляю…", "Thank you! I got your request and will reply soon.": "Спасибо! Заявка получена, скоро отвечу.", "Please fill in all fields correctly.": "Пожалуйста, заполните все поля корректно.", "Could not send. Please try again or message me on Telegram.": "Не удалось отправить. Попробуйте ещё раз или напишите мне в Telegram.", "Estimate: ": "Оценка: "});
   var btn=document.getElementById('lang'),lang='en',busy=false,obs;
   function plural(n){var a=n%10,b=n%100;return (a==1&&b!=11)?'шаг':(a>=2&&a<=4&&(b<12||b>14))?'шага':'шагов';}
@@ -1070,6 +1105,244 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
     b.addEventListener('pointerleave',function(){b.style.transform='';});
     b.style.transition='transform .4s cubic-bezier(.16,1,.3,1),background .2s,color .2s';
   });
+})();
+</script>
+<script>
+/* ===================== PINNED HORIZONTAL GALLERY ===================== */
+(function(){
+  var sec=document.getElementById('work'),wrap=sec.querySelector('.wrap'),grid=document.getElementById('grid'),
+      hn=document.getElementById('hgn'),hl=document.getElementById('hgline');
+  var on=false,dist=0,x=0,tx=0,running=false,last=-1;
+  window.__hgVel=0;
+  function want(){return innerWidth>=900&&innerHeight>=560}
+  function inner(){var cs=getComputedStyle(wrap);return wrap.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)}
+  function secTop(){return scrollY+sec.getBoundingClientRect().top}
+  function measure(){
+    var w=want();
+    if(w!==on){on=w;sec.classList.toggle('hg-on',on);if(!on){grid.style.transform='';sec.style.removeProperty('--hg-h');x=tx=0;}}
+    if(!on)return;
+    dist=Math.max(0,grid.scrollWidth-inner());
+    sec.style.setProperty('--hg-h',(innerHeight+dist)+'px');
+    update();
+  }
+  function prog(){if(!dist)return 0;var p=-sec.getBoundingClientRect().top/dist;return p<0?0:p>1?1:p}
+  function counter(){
+    var list=[].slice.call(grid.querySelectorAll('.work')).filter(function(w){return !w.hidden});
+    var i=dist?Math.round((-x/dist)*Math.max(0,list.length-1)):0;
+    hn.textContent=('0'+(list.length?i+1:0)).slice(-2)+' / '+('0'+list.length).slice(-2);
+    if(i!==last){if(last>-1)document.dispatchEvent(new CustomEvent('hg:tick'));last=i;}
+  }
+  function loop(){
+    var d=tx-x;x+=d*.14;if(Math.abs(tx-x)<.3)x=tx;
+    window.__hgVel=x-tx;
+    grid.style.transform='translate3d('+x.toFixed(2)+'px,0,0)';
+    counter();
+    if(x!==tx)requestAnimationFrame(loop);else{running=false;window.__hgVel=0;}
+  }
+  function update(){
+    if(!on)return;
+    var p=prog();tx=-p*dist;hl.style.setProperty('--hp',p.toFixed(4));
+    if(!running){running=true;requestAnimationFrame(loop);}
+  }
+  addEventListener('scroll',update,{passive:true});
+  addEventListener('resize',measure);
+  addEventListener('load',measure);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measure);
+  // filters: re-measure and start the row from the first card
+  [].forEach.call(document.querySelectorAll('.filter'),function(b){b.addEventListener('click',function(){
+    setTimeout(function(){last=-1;measure();if(on&&prog()>0){scrollTo(0,secTop());}counter();},20);
+  })});
+  // keyboard focus on an off-screen card: scroll the page so the card slides into view
+  wrap.addEventListener('scroll',function(){wrap.scrollLeft=0;wrap.scrollTop=0});
+  wrap.addEventListener('focusin',function(e){
+    wrap.scrollLeft=0;if(!on||!dist)return;var card=e.target.closest('.work');if(!card)return;
+    var p=Math.min(1,Math.max(0,(card.offsetLeft-inner()*.1)/dist));
+    scrollTo(0,secTop()+p*dist);
+  });
+  // horizontal trackpad swipes move the gallery too
+  wrap.addEventListener('wheel',function(e){
+    if(!on||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;
+    var p=prog();if((p<=0&&e.deltaX<0)||(p>=1&&e.deltaX>0))return;
+    e.preventDefault();scrollBy(0,e.deltaX);
+  },{passive:false});
+  measure();
+})();
+</script>
+<script>
+/* ===================== LIQUID HOVER (WebGL) ===================== */
+(function(){
+  if(!matchMedia('(pointer:fine)').matches)return;
+  var cv=document.createElement('canvas');cv.className='liq';cv.setAttribute('aria-hidden','true');
+  var gl=cv.getContext('webgl',{alpha:false,antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:false});
+  if(!gl)return;
+  var VS='attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+  var FS=[
+    'precision mediump float;',
+    'uniform sampler2D tex;uniform vec2 res,mouse;uniform float time,amp,rip;varying vec2 uv;',
+    'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+    'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}',
+    'float fbm(vec2 p){return n(p)*.6+n(p*2.1+3.7)*.3+n(p*4.3+1.1)*.1;}',
+    'void main(){',
+    '  vec2 asp=vec2(res.x/res.y,1.);',
+    '  vec2 d=(uv-mouse)*asp;float r=length(d);',
+    '  float wave=sin(r*26.-time*8.)*exp(-r*5.)*rip;',
+    '  vec2 flow=vec2(fbm(uv*2.6+vec2(time*.32,0.)),fbm(uv*2.6+vec2(4.1,time*.27)))-.5;',
+    '  float lens=exp(-r*r*9.)*amp;',
+    '  vec2 off=flow*amp*.07+(d/(r+1e-4))/asp*wave*.035-d/asp*lens*.08;',
+    '  float ca=(amp*.5+rip)*.007;',
+    '  vec2 q=uv+off;',
+    '  float cr=texture2D(tex,q+vec2(ca,0.)).r;',
+    '  vec4 cg=texture2D(tex,q);',
+    '  float cb=texture2D(tex,q-vec2(ca,0.)).b;',
+    '  gl_FragColor=vec4(cr,cg.g,cb,1.);',
+    '}'].join('\n');
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o}
+  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return;
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
+  var tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  var U={};['res','mouse','time','amp','rip'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
+
+  var frame=null,vid=null,hover=false,amp=0,rip=0,mx=.5,my=.5,tmx=.5,tmy=.5,px=0,py=0,raf=0,t0=performance.now(),left=0;
+  function size(){var r=frame.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.5);cv.width=Math.max(2,Math.round(r.width*dpr));cv.height=Math.max(2,Math.round(r.height*dpr));gl.viewport(0,0,cv.width,cv.height);}
+  function attach(f){
+    frame=f;vid=f.querySelector('video');if(!vid)return;
+    f.insertBefore(cv,vid.nextSibling);cv.classList.remove('on');
+    size();hover=true;amp=Math.max(amp,.15);rip=Math.max(rip,.6);
+    if(!raf)raf=requestAnimationFrame(draw);
+  }
+  function leave(){hover=false;left=performance.now();cv.classList.remove('on');}
+  document.addEventListener('pointerover',function(e){
+    if(e.pointerType&&e.pointerType!=='mouse')return;
+    var f=e.target.closest&&e.target.closest('.frame');
+    if(f&&f!==frame)attach(f);else if(f&&!hover){hover=true;rip=Math.max(rip,.5);}
+  });
+  document.addEventListener('pointermove',function(e){
+    if(!frame)return;
+    var r=frame.getBoundingClientRect(),inside=e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;
+    if(!inside){if(hover)leave();return}
+    tmx=(e.clientX-r.left)/r.width;tmy=1-(e.clientY-r.top)/r.height;
+    var sp=Math.hypot(e.clientX-px,e.clientY-py);px=e.clientX;py=e.clientY;
+    rip=Math.min(1,rip+sp*.012);
+  });
+  document.addEventListener('pointerleave',function(){if(hover)leave()});
+  [].forEach.call(document.querySelectorAll('.filter'),function(b){b.addEventListener('click',leave)});
+  addEventListener('resize',function(){if(frame)size()});
+  function draw(now){
+    raf=0;if(!frame)return;
+    var gv=Math.abs(window.__hgVel||0);
+    var target=hover?.22+Math.min(.6,gv*.004):0;
+    amp+=(target-amp)*(hover?.06:.12);
+    rip*=.955;
+    mx+=(tmx-mx)*.12;my+=(tmy-my)*.12;
+    if(vid.readyState>=2){
+      try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,vid);}catch(_){return}
+      gl.uniform2f(U.res,cv.width,cv.height);gl.uniform2f(U.mouse,mx,my);
+      gl.uniform1f(U.time,(now-t0)/1000);gl.uniform1f(U.amp,amp);gl.uniform1f(U.rip,rip);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      if(hover)cv.classList.add('on');
+    }
+    if(hover||now-left<450)raf=requestAnimationFrame(draw);
+  }
+})();
+</script>
+<script>
+/* ===================== UI SOUND (Web Audio, synthesized) ===================== */
+(function(){
+  var btn=document.getElementById('snd'),AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC){btn.hidden=true;return}
+  var ctx,master,amb,noise,on=false,AMB=.075,stage=document.getElementById('stage');
+  function init(){
+    ctx=new AC();
+    var comp=ctx.createDynamicsCompressor();comp.connect(ctx.destination);
+    master=ctx.createGain();master.gain.value=0;master.connect(comp);
+    amb=ctx.createGain();amb.gain.value=0;amb.connect(master);
+    // warm low pad with a slowly breathing filter
+    var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=480;lp.Q.value=.7;lp.connect(amb);
+    var lfo=ctx.createOscillator();lfo.frequency.value=.06;var lg=ctx.createGain();lg.gain.value=240;lfo.connect(lg);lg.connect(lp.frequency);lfo.start();
+    [[55,'sine',.5],[54.6,'sine',.32],[82.41,'triangle',.16],[110.4,'sine',.2],[164.81,'sine',.05],[246.94,'sine',.018]].forEach(function(o){
+      var s=ctx.createOscillator();s.type=o[1];s.frequency.value=o[0];var g=ctx.createGain();g.gain.value=o[2];s.connect(g);g.connect(lp);s.start();
+    });
+    // air: filtered noise that swells and fades
+    noise=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);var d=noise.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    var ns=ctx.createBufferSource();ns.buffer=noise;ns.loop=true;
+    var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=650;bp.Q.value=.5;
+    var ng=ctx.createGain();ng.gain.value=.05;ns.connect(bp);bp.connect(ng);ng.connect(amb);ns.start();
+    var l2=ctx.createOscillator();l2.frequency.value=.09;var l2g=ctx.createGain();l2g.gain.value=.035;l2.connect(l2g);l2g.connect(ng.gain);l2.start();
+  }
+  function ramp(p,v,t){var n=ctx.currentTime;p.cancelScheduledValues(n);p.setValueAtTime(p.value,n);p.linearRampToValueAtTime(v,n+t);}
+  function env(g,t,a,peak,dec){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+dec);}
+  function tone(f0,f1,type,peak,a,dec,delay){
+    var t=ctx.currentTime+(delay||0),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;
+    o.frequency.setValueAtTime(f0,t);if(f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+a+dec);
+    env(g,t,a,peak,dec);o.connect(g);g.connect(master);o.start(t);o.stop(t+a+dec+.05);
+  }
+  function burst(type,f0,f1,q,peak,a,dec){
+    var t=ctx.currentTime,s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();
+    s.buffer=noise;f.type=type;f.Q.value=q;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+a+dec);
+    env(g,t,a,peak,dec);s.connect(f);f.connect(g);g.connect(master);s.start(t,Math.random());s.stop(t+a+dec+.05);
+  }
+  var S={
+    tick:function(){tone(2300,1500,'sine',.045,.003,.06)},
+    swoosh:function(){burst('bandpass',320,2000,1.4,.07,.12,.32)},
+    click:function(){tone(190,52,'sine',.32,.004,.16);burst('highpass',3200,3200,.7,.05,.002,.03)},
+    slide:function(v){tone(600+v*14,600+v*14,'triangle',.025,.002,.04)},
+    step:function(){tone(3400,2600,'sine',.022,.002,.035)},
+    on:function(){tone(523.25,523.25,'sine',.09,.01,.5);tone(783.99,783.99,'sine',.07,.01,.7,.09)},
+    off:function(){tone(783.99,783.99,'sine',.07,.01,.35);tone(523.25,523.25,'sine',.06,.01,.5,.08)}
+  };
+  function play(k,v){if(on&&ctx&&ctx.state==='running')S[k](v)}
+  function ambLevel(){return (stage&&!stage.hidden)?0:AMB}
+  function enable(){
+    if(!ctx)init();
+    on=true;btn.setAttribute('aria-pressed','true');
+    ctx.resume().then(function(){ramp(master.gain,1,.3);ramp(amb.gain,ambLevel(),2.4);S.on();});
+    try{localStorage.setItem('snd','1')}catch(e){}
+  }
+  function disable(){
+    if(ctx&&on){S.off();ramp(amb.gain,0,.4);ramp(master.gain,0,.9);}
+    on=false;btn.setAttribute('aria-pressed','false');
+    try{localStorage.setItem('snd','0')}catch(e){}
+  }
+  btn.addEventListener('click',function(){on?disable():enable()});
+
+  // remembered choice: show it as on, start audio on the first gesture (browsers require one)
+  var saved=null;try{saved=localStorage.getItem('snd')}catch(e){}
+  if(saved==='1'){
+    btn.setAttribute('aria-pressed','true');
+    var first=function(e){
+      ['pointerdown','keydown'].forEach(function(ev){removeEventListener(ev,first,true)});
+      if(btn.contains(e.target)){btn.setAttribute('aria-pressed','false');return}
+      enable();
+    };
+    ['pointerdown','keydown'].forEach(function(ev){addEventListener(ev,first,true)});
+  }
+
+  // hover and click sounds
+  var SEL='a,button,.frame,.xp-media,input[type=range],label.rush',lastEl=null,lastT=0;
+  document.addEventListener('pointerover',function(e){
+    if(e.pointerType!=='mouse')return;
+    var el=e.target.closest&&e.target.closest(SEL);
+    if(el===lastEl)return;lastEl=el;if(!el)return;
+    var n=performance.now();if(n-lastT<45)return;lastT=n;
+    el.matches('.frame,.xp-media')?play('swoosh'):play('tick');
+  });
+  document.addEventListener('click',function(e){
+    var el=e.target.closest&&e.target.closest(SEL);
+    if(el&&el!==btn&&!btn.contains(el))play('click');
+  },true);
+  var len=document.getElementById('len'),lt=0;
+  if(len)len.addEventListener('input',function(){var n=performance.now();if(n-lt>35){lt=n;play('slide',+len.value)}});
+  document.addEventListener('hg:tick',function(){play('step')});
+
+  // the video player has its own sound: fade the ambient out while it is open
+  if(stage)new MutationObserver(function(){if(on&&ctx)ramp(amb.gain,ambLevel(),stage.hidden?1.6:.25)}).observe(stage,{attributes:true,attributeFilter:['hidden']});
+  document.addEventListener('visibilitychange',function(){if(!ctx)return;if(document.hidden)ctx.suspend();else if(on)ctx.resume()});
 })();
 </script>
 </body>
