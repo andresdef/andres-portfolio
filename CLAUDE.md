@@ -12,21 +12,11 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 - Group changes and push in batches, not after every tiny edit.
 - Planned: custom domain (owner is choosing one on Porkbun). When he has it: add a `CNAME` file with the domain and update any absolute links; he sets DNS and the Pages setting himself.
 
-## Promoting v2 to the main site (owner's explicit goal)
-
-The owner wants the finished experimental version to **replace the original site at the same link** (https://andresdef.github.io/andres-portfolio/), not live at `/v2/`. Do this only when he says v2 is ready, in one commit:
-1. Copy `v2/index.html` over `index.html`.
-2. In the new `index.html` replace every `../media/` with `media/` and remove `<meta name="robots" content="noindex">`.
-3. Delete the `v2/` folder (or leave a tiny redirect page at `v2/index.html` to `../`).
-4. Check with Playwright or a local server that videos load, the player opens, filters, calculator, order form and the RU/EN switch all work, then push to `main`.
-5. Update this file: `index.html` is now the cinematic version, and remove the "keep both files in sync" rule.
-Until then keep working in `v2/` and leave `index.html` untouched so clients always see a stable site.
-
 ## Files
 
-- `index.html` — the live site. One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework.
-- `v2/index.html` — experimental "cinematic" version (preloader, glass lens over the name, dust particles, scroll-expanding showreel, statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain, synthesized Web Audio UI sound behind the `#snd` toggle (off by default; ambient is soft rain, paused while the player is open; owner wants UI clicks soft and quiet, never sharp), WebGL liquid distortion over the hovered preview (fine pointer only), pinned horizontal work gallery at ≥900 px wide via `#work.hg-on`, player that grows out of the clicked card and shrinks back (FLIP with Web Animations), sound-reactive particles/spectrum/glow behind the player via an AnalyserNode wired only once its AudioContext is running, marquee driven by scroll speed and direction). `noindex`. Media paths are `../media/...`. Live at `/andres-portfolio/v2/`. The owner likes it; it may replace `index.html` later.
-  v2 was built from a copy of `index.html`, so content changes (works, prices, texts) must be made in **both** files until v2 is promoted.
+- `index.html` — the live site, the "cinematic" version (the former v2, promoted to the main URL on 2026-11-08 at the owner's request). One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework. Media paths are `media/...`. Effects: preloader, glass lens over the name, dust particles, scroll-expanding showreel, statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain, synthesized Web Audio UI sound behind the `#snd` toggle (off by default; ambient is soft rain, paused while the player is open; owner wants UI clicks soft and quiet, never sharp), WebGL liquid distortion over the hovered preview (fine pointer only), pinned horizontal work gallery at ≥900 px wide via `#work.hg-on`, player that grows out of the clicked card and shrinks back (FLIP with Web Animations), sound-reactive particles/spectrum/glow behind the player via an AnalyserNode wired only once its AudioContext is running, marquee driven by scroll speed and direction.
+- `v2/index.html` — only a redirect to `../` so old `/v2/` links keep working. Do not build there; edit `index.html`.
+- `.claude/launch.json` — local preview server (`python -m http.server 8080`), not committed.
 - `media/` — for each work: `name.mp4` (light muted looping preview on the card), `name.jpg` (poster), `name-hq.mp4` (high quality with sound, used in the player). `don-coptilio` and `dream-baku-core` have no `-hq` yet (waiting for originals from the owner).
 
 ## How the page works (index.html)
@@ -41,8 +31,8 @@ Until then keep working in `v2/` and leave `index.html` untouched so clients alw
   Current prices (EUR): Motion design from €105, step €40, max 40 s. Edit from €70, step €25, max 45 s. The header text "From €70 per video" and the button labels must match `data-base`.
 - **Order form**: "Place an order" (`#ord`) opens `#order` (first/last name, phone, email, details, small Submit bottom-right). Sends to Web3Forms with the public access key in `var KEY` (delivers to the owner's email). The calculator estimate is included.
 - **Language switch** (`#lang`, RU/EN): the HTML is in English; a script translates text nodes by exact trimmed match from the dictionary `D` (plus `Object.assign(D,{…})` blocks) and a MutationObserver translates dynamic text. Original English is kept on each node (`__en`) so switching back works. Choice is saved in localStorage; Russian is the default when the browser language is Russian.
-  **Any new visible English text needs a Russian entry in the dictionary**, in both files. Splitting a text node into spans breaks the match; v2's heading animation restores the original nodes after animating for this reason.
-  Fonts: Big Shoulders Display + Instrument Sans + IBM Plex Mono have no Cyrillic, so `[lang=ru]` switches to Oswald + Inter. v2 also uses Cormorant Garamond (has Cyrillic).
+  **Any new visible English text needs a Russian entry in the dictionary**. Splitting a text node into spans breaks the match; the heading animation restores the original nodes after animating for this reason.
+  Fonts: Big Shoulders Display + Instrument Sans + IBM Plex Mono have no Cyrillic, so `[lang=ru]` switches to Oswald + Inter. Cormorant Garamond is also used (has Cyrillic).
 - Page always opens at the top (scroll restoration off, hash removed on load).
 
 ## Design rules from the owner
@@ -60,9 +50,9 @@ Until then keep working in `v2/` and leave `index.html` untouched so clients alw
 2. Make the HQ file with sound:
    `ffmpeg -i in.mp4 -vf scale=-2:1080 -c:v libx264 -crf 20 -preset slow -c:a aac -b:a 192k -movflags +faststart media/name-hq.mp4`
 3. Copy an existing `<article class="work">`, set `data-cat`, `data-title`, `--ar` / `data-ar` (16:9 = 1.7778, 9:16 = 0.5625), duration, description, badge.
-4. Add the Russian translation of the description to the dictionary. Do it in `index.html` and `v2/index.html`.
+4. Add the Russian translation of the description to the dictionary. Do it in `index.html`.
 5. When replacing a file under the same name, add `?v=N` to its URLs to bust caches.
 
 ## Ideas the owner may ask for next
 
-UI sound design (ambient + hover/click sounds behind a "Sound on" toggle), WebGL liquid distortion on card hover, pinned horizontal work gallery, a three.js 3D object in the hero, a case-study page per work, a marquee that reacts to scroll speed.
+A three.js 3D object in the hero, a case-study page per work.
