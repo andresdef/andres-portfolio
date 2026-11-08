@@ -23,7 +23,7 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 
 - **Work cards**: `<article class="work" data-cat="…" data-title="…" style="--ar:W/H">` containing `<button class="frame" data-src="media/…-hq.mp4" data-ar="…">` with the preview `<video>`, plus title, duration, description, category and badge.
   - Categories (`data-cat` and filter `data-filter` keys, always English): `Motion Design`, `Edits`, `3D Models & Design`, `All`. Default filter is Motion Design, order of filters: Motion Design, Edits, 3D, All. Counts are computed from the markup.
-  - Badges: `<span class="badge client">Client work</span>` for real clients (Don Coptilio, Yeay Corporation, Invizione Ad); grey `<span class="badge">Concept · personal project</span>` for self-initiated ads (ABB, ZARA, Korhan).
+  - Badges: `class="badge mono client"` → "Client work" for real clients (Don Coptilio, Yeay Corporation, Invizione Ad); `class="badge mono concept"` → "Concept · personal project" for self-initiated ads (ABB, ZARA, Korhan).
   - Card size comes from `--ar` and `--row-h`, so nothing is letterboxed or cropped.
   - Previews autoplay via an IntersectionObserver (`sync()` / `kick()`). **Never pause previews based on `prefers-reduced-motion`**: the owner's PC has it on, and that once broke autoplay for him.
 - **Player**: `#stage` modal plays `data-src` with sound, Prev/Next/Close, title from `data-title`.
