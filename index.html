@@ -260,17 +260,6 @@ body.loading{overflow:hidden}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 @media (max-width:760px){.hx-scroll{display:none}}
 
-/* glass lens */
-.lens{--d:clamp(110px,17vw,260px);position:absolute;left:0;top:0;width:var(--d);height:var(--d);border-radius:50%;overflow:hidden;pointer-events:none;z-index:4;opacity:0;transition:opacity .8s;
-  background:rgba(12,12,12,.35);backdrop-filter:blur(14px) brightness(.8);-webkit-backdrop-filter:blur(14px) brightness(.8)}
-.hx.go .lens{opacity:1}
-.lens-clone{position:absolute;inset:0}
-.lens-clone .hx-big{position:absolute;margin:0;text-shadow:-3px 0 rgba(255,255,255,.35),3px 0 rgba(90,90,90,.7)}
-.lens::after{content:"";position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.55),rgba(255,255,255,0) 22%),radial-gradient(circle at 70% 82%,rgba(255,255,255,.18),rgba(255,255,255,0) 30%),radial-gradient(circle,rgba(0,0,0,0) 58%,rgba(0,0,0,.55) 100%);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 24px rgba(255,255,255,.18),inset -12px -16px 34px rgba(0,0,0,.6)}
-.lens-tag{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);font-size:9px;z-index:2;background:rgba(0,0,0,.55);padding:4px 8px;border-radius:99px;white-space:nowrap}
-
 /* showreel expand */
 .xp{position:relative;height:260vh;padding:0}
 .hx{padding:66px 0 0}
@@ -450,7 +439,6 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
       </div>
       <p class="tools mono mute"><span>DaVinci Resolve</span><span>Fusion</span><span>Figma</span><span>Blender</span><span>Animation</span></p>
     </div>
-    <div class="lens" id="lens" aria-hidden="true"><div class="lens-clone" id="lensclone"></div><span class="lens-tag mono">Sound on</span></div>
     <span class="hx-scroll mono" aria-hidden="true">Scroll</span>
   </section>
 
@@ -1077,29 +1065,6 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
   dust(document.getElementById('dust'),110);
   dust(document.getElementById('dust2'),70);
 
-  /* glass lens */
-  var lens=document.getElementById('lens'),lc=document.getElementById('lensclone'),clone=big.cloneNode(true);clone.removeAttribute('id');
-  [].forEach.call(clone.querySelectorAll('.ch'),function(c){c.style.cssText='transform:none;filter:none;opacity:1;transition:none'});
-  lc.appendChild(clone);
-  var tx=vw*.55,ty=vh*.6,lx=tx,ly=ty,user=false,lastMove=0;
-  hx.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var r=hx.getBoundingClientRect(),br=big.getBoundingClientRect(),R=lens.offsetWidth/2;
-    if(e.clientX>br.left-R*.6&&e.clientX<br.right+R*.6&&e.clientY>br.top-R*.6&&e.clientY<br.bottom+R*.3){tx=e.clientX-r.left;ty=e.clientY-r.top;user=true;lastMove=performance.now();}else{user=false;}});
-  function lensFrame(){
-    var hr=hx.getBoundingClientRect();
-    if(hr.bottom>0){
-      var br=big.getBoundingClientRect(),bx=br.left-hr.left,by=br.top-hr.top;
-      if(!user||performance.now()-lastMove>3000){var t=performance.now()/1000;tx=bx+br.width*(.5+.42*Math.sin(t*.45));ty=by+br.height*(.5+.18*Math.sin(t*.9));}
-      lx=lerp(lx,tx,.1);ly=lerp(ly,ty,.1);
-      var R=lens.offsetWidth/2;
-      lens.style.transform='translate3d('+(lx-R)+'px,'+(ly-R)+'px,0)';
-      clone.style.left=(bx-(lx-R))+'px';clone.style.top=(by-(ly-R))+'px';
-      clone.style.transformOrigin=(lx-bx)+'px '+(ly-by)+'px';
-      clone.style.transform='scale(1.42)';
-    }
-    requestAnimationFrame(lensFrame);
-  }
-  requestAnimationFrame(lensFrame);
-
   /* scroll-driven: hero out, showreel expand, statement fill */
   var hin=document.getElementById('hxin'),hbg=document.querySelector('.hx-bg'),xp=document.getElementById('xp'),xm=document.getElementById('xpmedia'),
       xl=document.querySelector('.xp-l'),xr=document.querySelector('.xp-r'),xc=document.querySelector('.xp-cap'),stt=document.getElementById('stt');
@@ -1110,7 +1075,6 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
     hin.style.transform='translate3d(0,'+(-p*90)+'px,0) scale('+(1+p*.06)+')';
     hin.style.opacity=1-p*1.15;hin.style.filter='blur('+(p*10)+'px)';
     hbg.style.transform='scale('+(1.12+p*.12)+') translate3d(0,'+(p*60)+'px,0)';
-    lens.style.visibility=p>.6?'hidden':'visible';
     // showreel
     var r=xp.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh),0,1),e=q<.5?2*q*q:1-Math.pow(-2*q+2,2)/2;
     var mob=vw<=760,w0=mob?vw*.78:vw*.44,h0=w0*9/16;
