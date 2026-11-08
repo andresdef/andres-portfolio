@@ -12,6 +12,16 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 - Group changes and push in batches, not after every tiny edit.
 - Planned: custom domain (owner is choosing one on Porkbun). When he has it: add a `CNAME` file with the domain and update any absolute links; he sets DNS and the Pages setting himself.
 
+## Promoting v2 to the main site (owner's explicit goal)
+
+The owner wants the finished experimental version to **replace the original site at the same link** (https://andresdef.github.io/andres-portfolio/), not live at `/v2/`. Do this only when he says v2 is ready, in one commit:
+1. Copy `v2/index.html` over `index.html`.
+2. In the new `index.html` replace every `../media/` with `media/` and remove `<meta name="robots" content="noindex">`.
+3. Delete the `v2/` folder (or leave a tiny redirect page at `v2/index.html` to `../`).
+4. Check with Playwright or a local server that videos load, the player opens, filters, calculator, order form and the RU/EN switch all work, then push to `main`.
+5. Update this file: `index.html` is now the cinematic version, and remove the "keep both files in sync" rule.
+Until then keep working in `v2/` and leave `index.html` untouched so clients always see a stable site.
+
 ## Files
 
 - `index.html` — the live site. One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework.
