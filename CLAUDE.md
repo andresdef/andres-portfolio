@@ -14,9 +14,9 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 
 ## Files
 
-- `index.html` — the live site, the "cinematic" version (the former v2, promoted to the main URL on 2026-11-08 at the owner's request). One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework. Media paths are `media/...`. Effects: preloader, dust particles, scroll-expanding showreel, statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain, synthesized Web Audio UI sound behind the `#snd` toggle (off by default; ambient is soft rain, paused while the player is open; owner wants UI clicks soft and quiet, never sharp), WebGL liquid distortion over the hovered preview (fine pointer only), pinned horizontal work gallery at ≥900 px wide via `#work.hg-on`, player that grows out of the clicked card and shrinks back (FLIP with Web Animations), sound-reactive particles/spectrum/glow behind the player via an AnalyserNode wired only once its AudioContext is running, marquee driven by scroll speed and direction, line-art cat (`#cat`) that peeks up in the pinned gallery with a "scroll down for prices and ordering" bubble and scrolls to `#pricing` on click.
+- `index.html` — the live site, the "cinematic" version (the former v2, promoted to the main URL on 2026-11-08 at the owner's request). One self-contained file: inline CSS and several inline `<script>` blocks. No build step, no framework. Media paths are `media/...`. Effects: preloader, dust particles, scroll-expanding showreel (`#xp`: grows into a framed 16:9 screen with viewfinder corners and live timecode, never full-bleed, with a "Keep scrolling" hint; the About section `.st` overlaps it with a negative margin and rises over it like a sheet, so the page never feels finished there — the owner complained the full-screen reel looked like the end of the site), section rail on the right (`#rail`, ≥900 px, labels on hover, smooth jumps without a hash), statement fill, scrambling stats, shattering headings, custom cursor, magnetic buttons, grain, synthesized Web Audio UI sound behind the `#snd` toggle (off by default; ambient is soft rain, paused while the player is open; owner wants UI clicks soft and quiet, never sharp), WebGL liquid distortion over the hovered preview (fine pointer only), pinned horizontal work gallery at ≥900 px wide via `#work.hg-on`, player that grows out of the clicked card and shrinks back (FLIP with Web Animations), sound-reactive particles/spectrum/glow behind the player via an AnalyserNode wired only once its AudioContext is running, marquee driven by scroll speed and direction, line-art cat (`#cat`) that peeks up in the pinned gallery with a "scroll down for prices and ordering" bubble and scrolls to `#pricing` on click.
 - `v2/index.html` — only a redirect to `../` so old `/v2/` links keep working. Do not build there; edit `index.html`.
-- `.claude/launch.json` — local preview server (`python -m http.server 8080`), not committed.
+- `.claude/launch.json` + `.claude/serve.ps1` — local preview server on port 8080 (a tiny PowerShell static server; this PC has no real Python or Node), not committed.
 - `media/` — for each work: `name.mp4` (light muted looping preview on the card), `name.jpg` (poster), `name-hq.mp4` (high quality with sound, used in the player). `don-coptilio` and `dream-baku-core` have no `-hq` yet (waiting for originals from the owner).
 
 ## How the page works (index.html)
@@ -43,6 +43,10 @@ Contact everywhere on the site: Telegram https://t.me/andres_de_f (`@andres_de_f
 - Work titles and descriptions were written by the assistant from the frames; the owner may correct them.
 
 ## Adding a new work
+
+ffmpeg is installed via winget (Gyan.FFmpeg). If `ffmpeg` is not on PATH in a fresh shell, use
+`$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin\ffmpeg.exe`.
+The "Works on this page" stat counts `.work` articles automatically; filter counts too.
 
 1. Make the preview (muted, ~960 px wide, short loop) and poster:
    `ffmpeg -i in.mp4 -an -vf scale=960:-2 -c:v libx264 -crf 28 -preset slow -movflags +faststart media/name.mp4`

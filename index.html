@@ -262,21 +262,53 @@ body.loading{overflow:hidden}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 @media (max-width:760px){.hx-scroll{display:none}}
 
-/* showreel expand */
-.xp{position:relative;height:260vh;padding:0}
+/* showreel expand: grows into a framed screen (never full-bleed), then the next section slides over it like a sheet */
+.xp{position:relative;height:280vh;padding:0}
 .hx{padding:66px 0 0}
 .xp-pin{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.xp-media{--w:44vw;--h:24.75vw;--r:10px;position:relative;width:var(--w);height:var(--h);border-radius:var(--r);overflow:hidden;border:0;padding:0;background:#000;cursor:pointer;z-index:1;flex:none}
-.xp-media video{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(var(--g,1))}
+.xp-media{--w:44vw;--h:24.75vw;--r:10px;position:relative;width:var(--w);height:var(--h);border-radius:var(--r);overflow:hidden;border:0;padding:0;background:#000;cursor:pointer;z-index:1;flex:none;
+  transform:translate3d(0,var(--cy,0px),0) scale(var(--cs,1));will-change:transform;box-shadow:0 40px 120px -40px rgba(0,0,0,.9)}
+.xp-media video{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(var(--g,1)) brightness(var(--cb,1))}
+/* viewfinder corners close in on the frame as it grows */
+.xp-vf{position:absolute;inset:0;z-index:2;pointer-events:none}
+.xp-vf i{position:absolute;width:22px;height:22px;border:0 solid var(--fg);opacity:var(--vo,0)}
+.xp-vf i:nth-child(1){left:var(--vi,14px);top:var(--vi,14px);border-width:1px 0 0 1px}
+.xp-vf i:nth-child(2){right:var(--vi,14px);top:var(--vi,14px);border-width:1px 1px 0 0}
+.xp-vf i:nth-child(3){left:var(--vi,14px);bottom:var(--vi,14px);border-width:0 0 1px 1px}
+.xp-vf i:nth-child(4){right:var(--vi,14px);bottom:var(--vi,14px);border-width:0 1px 1px 0}
+.xp-tc{position:absolute;top:18px;right:20px;z-index:2;font-size:11px;letter-spacing:.08em;color:#fff;opacity:var(--vo,0);display:flex;align-items:center;gap:8px;mix-blend-mode:difference}
+.xp-tc::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;animation:rec 1.2s steps(2) infinite}
+@keyframes rec{50%{opacity:0}}
+/* "there is more below" hint under the frame */
+.xp-next{position:absolute;left:50%;bottom:clamp(14px,3vh,30px);z-index:2;transform:translate(-50%,calc((1 - var(--no,0)) * 14px));opacity:var(--no,0);
+  display:flex;flex-direction:column;align-items:center;gap:10px;color:#cfcfcf;text-decoration:none;font-size:12px;letter-spacing:.06em;text-align:center;pointer-events:auto}
+.xp-next b{font-weight:400;color:var(--fg);text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+.xp-next i{display:block;width:1px;height:34px;background:linear-gradient(var(--fg),transparent);animation:drip 1.6s var(--ease) infinite}
+.xp-next:hover{color:var(--fg)}
+/* the About section is the sheet that rises over the pinned reel */
+.st{position:relative;z-index:3;margin-top:-100vh;margin-top:-100svh;background:var(--bg);border-radius:var(--sr,28px) var(--sr,28px) 0 0;
+  box-shadow:0 -1px 0 rgba(255,255,255,.14),0 -50px 90px -20px rgba(0,0,0,.85)}
 .xp-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:99px;opacity:var(--po,0);transition:opacity .3s}
 .xp-t{position:absolute;top:50%;margin:0;font-family:var(--serif);font-style:italic;font-size:clamp(34px,5.4vw,100px);line-height:1;white-space:nowrap;z-index:2;pointer-events:none;mix-blend-mode:difference}
 .xp-l{left:calc(50% - 28vw);top:calc(50% - 12.4vw);transform:translate(var(--tx,0),-72%)}
 .xp-r{right:calc(50% - 28vw);top:calc(50% + 12.4vw);transform:translate(calc(-1 * var(--tx,0)),-28%)}
 .xp-cap{position:absolute;left:clamp(16px,5vw,88px);bottom:28px;z-index:2;color:#bdbdbd;opacity:var(--co,0)}
-@media (max-width:760px){.xp-media{--w:78vw;--h:43.9vw}.xp-l{left:50%;top:22%;transform:translate(-50%,0)}.xp-r{right:auto;left:50%;top:auto;bottom:22%;transform:translate(-50%,0)}.xp-t{font-size:44px}}
+@media (max-width:760px){.xp{height:250vh}.xp-media{--w:78vw;--h:43.9vw}.xp-l{left:50%;top:22%;transform:translate(-50%,0)}.xp-r{right:auto;left:50%;top:auto;bottom:22%;transform:translate(-50%,0)}.xp-t{font-size:44px}
+  .xp-cap{left:16px;bottom:auto;top:calc(50% - 28.2vw - 34px)}.xp-vf i{width:14px;height:14px}.xp-tc{top:12px;right:12px;font-size:10px}.st{--sr:20px}}
 
 /* statement */
-.st{padding-block:clamp(80px,14vw,200px) clamp(60px,9vw,140px)}
+.st{padding-block:clamp(56px,8vw,120px) clamp(60px,9vw,140px)}
+
+/* section rail: always shows how much of the page is still ahead */
+.rail{position:fixed;right:clamp(10px,1.6vw,26px);top:50%;z-index:19;display:flex;flex-direction:column;align-items:flex-end;gap:12px;transform:translate(14px,-50%);opacity:0;pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease);mix-blend-mode:difference}
+.rail.on{opacity:1;transform:translate(0,-50%);pointer-events:auto}
+.rail a{display:flex;align-items:center;gap:10px;padding:3px 0;color:#fff;text-decoration:none;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.rail a span{opacity:0;transform:translateX(6px);transition:opacity .35s,transform .35s var(--ease);white-space:nowrap}
+.rail a::after{content:"";width:12px;height:1px;background:#fff;opacity:.4;transition:width .45s var(--ease),opacity .3s}
+.rail:hover a span{opacity:.55;transform:none}.rail a:hover span,.rail:hover a.cur span{opacity:1}
+.rail a.cur::after{width:30px;opacity:1}
+.rail a.past::after{opacity:.75}
+@media (max-width:899px){.rail{display:none}}
 .st-k{margin:0 0 28px}
 .st-t{margin:0;font-family:var(--serif);font-weight:500;font-size:clamp(32px,4.6vw,78px);line-height:1.08;max-width:22ch;letter-spacing:-.005em;
   background:linear-gradient(180deg,var(--fg) calc(var(--p,0) * 100%),#3a3a3a calc(var(--p,0) * 100% + 6%));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -423,6 +455,14 @@ try{history.scrollRestoration='manual'}catch(e){}
 if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
 window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(function(){window.scrollTo(0,0)},60)});
 </script>
+<nav class="rail mono" id="rail" aria-label="Page sections">
+  <a href="#xp"><span>Showreel</span></a>
+  <a href="#about"><span>About</span></a>
+  <a href="#work"><span>Work</span></a>
+  <a href="#services"><span>Services</span></a>
+  <a href="#pricing"><span>Pricing</span></a>
+  <a href="#contact"><span>Contact</span></a>
+</nav>
 <main id="top">
   <section class="hx" id="hx" aria-label="Intro">
     <video class="hx-bg" src="media/yeay-corporation.mp4" poster="media/yeay-corporation.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
@@ -450,19 +490,22 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
       <p class="xp-t xp-l">Every video</p>
       <button class="xp-media" id="xpmedia" type="button" aria-label="Play Invizione ad with sound">
         <video src="media/invizione-ad.mp4" poster="media/invizione-ad.jpg" muted loop playsinline autoplay preload="metadata"></video>
+        <span class="xp-vf" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="xp-tc mono" id="xptc" aria-hidden="true">00:00:00:00</span>
         <span class="xp-play mono">Play with sound</span>
       </button>
       <p class="xp-t xp-r">plays with sound</p>
       <p class="xp-cap mono">Invizione Ad · Client work</p>
+      <a class="xp-next mono" id="xpnext" href="#work"><b>Keep scrolling</b><span>Works, prices and ordering below</span><i aria-hidden="true"></i></a>
     </div>
   </section>
 
-  <section class="st" aria-label="About">
+  <section class="st" id="about" aria-label="About">
     <div class="wrap">
       <p class="st-k mono"><span class="mute">00 —</span> <span>About</span></p>
       <p class="st-t" id="stt">Promo videos, animated intros and rhythm-driven edits. Sound design is half of the work, so every video on this page plays with sound.</p>
       <div class="stats" id="stats">
-        <div><b class="num" data-n="10" data-pad="2">00</b><span class="mono mute">Works on this page</span></div>
+        <div><b class="num" data-n="11" data-works data-pad="2">00</b><span class="mono mute">Works on this page</span></div>
         <div><b class="num" data-n="3" data-pad="2">00</b><span class="mono mute">Client brands</span></div>
         <div><b class="num" data-n="100" data-suf="%">000</b><span class="mono mute">With sound</span></div>
       </div>
@@ -484,13 +527,13 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
       </div>
 
       <div class="filters" role="group" aria-label="Filter work by category">
-        <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="true">Motion Design <span class="n" data-count="Motion Design">6</span></button>
+        <button class="filter mono" type="button" data-filter="Motion Design" aria-pressed="true">Motion Design <span class="n" data-count="Motion Design">7</span></button>
         <button class="filter mono" type="button" data-filter="Edits" aria-pressed="false">Edits <span class="n" data-count="Edits">2</span></button>
         <button class="filter mono" type="button" data-filter="3D Models &amp; Design" aria-pressed="false">3D Models &amp; Design <span class="n" data-count="3D Models &amp; Design">2</span></button>
-        <button class="filter mono" type="button" data-filter="All" aria-pressed="false">All <span class="n" data-count="All">10</span></button>
+        <button class="filter mono" type="button" data-filter="All" aria-pressed="false">All <span class="n" data-count="All">11</span></button>
       </div>
 
-      <div class="hg-bar" aria-hidden="true"><span class="mono" id="hgn">01 / 06</span><span class="hg-line"><i id="hgline"></i></span><span class="mono mute">Scroll to browse →</span></div>
+      <div class="hg-bar" aria-hidden="true"><span class="mono" id="hgn">01 / 07</span><span class="hg-line"><i id="hgline"></i></span><span class="mono mute">Scroll to browse →</span></div>
 
       <div class="grid" id="grid">
         <article class="work" data-cat="Motion Design" data-title="Don Coptilio" style="--ar:0.5625">
@@ -538,6 +581,18 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
           <div class="meta">
             <h3>ABB Motion Ad</h3><span class="len">0:15</span>
             <p>Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.</p>
+            <span class="cat mono mute">Motion Design</span>
+            <span class="badge mono concept">Concept · personal project</span>
+          </div>
+        </article>
+        <article class="work" data-cat="Motion Design" data-title="ABB Cards" style="--ar:1.7778">
+          <button class="frame" type="button" data-src="media/abb-cards-hq.mp4" data-ar="1.7778" aria-label="Play ABB cards motion ad with sound">
+            <video src="media/abb-cards.mp4" poster="media/abb-cards.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+            <span class="chip"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>Play with sound</span>
+          </button>
+          <div class="meta">
+            <h3>ABB Cards</h3><span class="len">0:09</span>
+            <p>Second ABB bank concept: a blueprint-grid intro, cards fanning out into a spinning rosette around the logo and a motion-blur spin into the end card.</p>
             <span class="cat mono mute">Motion Design</span>
             <span class="badge mono concept">Concept · personal project</span>
           </div>
@@ -919,8 +974,8 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 
 <script>
 (function(){
-  var D={"Work": "Работы", "Services": "Услуги", "Pricing": "Цены", "Telegram ↗": "Telegram ↗", "Freelance motion designer and video editor": "Фриланс моушн-дизайнер и видеомонтажёр", "Motion design": "Моушн-дизайн", "Edits": "Эдиты", "3D Design": "3D-дизайн", "Promo videos, animated intros and rhythm-driven edits. Sound design is half of the work, so every video on this page plays with sound.": "Промо-ролики, анимированные интро и эдиты в ритм музыке. Саунд-дизайн — половина работы, поэтому каждое видео на этой странице играет со звуком.", "Message me on Telegram ↗": "Написать в Telegram ↗", "See the work ↓": "Смотреть работы ↓", "Order ↓": "Заказать ↓", "Selected work": "Избранные работы", "Click a video to play it with sound": "Нажмите на видео, чтобы включить его со звуком", "Motion Design": "Моушн-дизайн", "3D Models & Design": "3D-модели и дизайн", "All": "Все", "Play with sound": "Смотреть со звуком", "Client work": "Работа для клиента", "Concept · personal project": "Концепт · личный проект", "Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.": "Вертикальная промо-реклама гастропаба в Баку: меню, атмосфера и часы работы в одном ролике.", "Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.": "Анимированное интро для игрового Discord-сервера в инопланетной теме: иконки приложений, свечение и кинетическая типографика.", "Promo for a photo and video production service: app-style UI cards, a shoot planner and bold color bursts.": "Промо для фото- и видеостудии: карточки в стиле приложения, планировщик съёмок и яркие цветовые вспышки.", "Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.": "Анимированная реклама банковской карты: сборка логотипа, развороты карты и быстрая ритмичная череда переходов.", "Animated fashion ad: logo reveal, product carousel and a store-style product card.": "Анимированная модная реклама: появление логотипа, карусель товаров и карточка товара в стиле магазина.", "Motion promo for a coffee brand on a delivery app: logo build, a 3D menu view and drink cards.": "Моушн-промо кофейного бренда в приложении доставки: сборка логотипа, 3D-меню и карточки напитков.", "Y2K collage edit about inFAMOUS Second Son: character cards, stickers and bright color blocks.": "Эдит-коллаж в стиле Y2K по inFAMOUS Second Son: карточки персонажей, стикеры и яркие цветовые блоки.", "Red and black blade edit with Japanese titles, film grain and hard cuts on the beat.": "Красно-чёрный эдит про клинки с японскими титрами, плёночным зерном и резкими склейками в бит.", "Dreamcore edit: neon wireframe Flame Towers, retro system pop-ups, geometry and music notes.": "Эдит в стиле дримкор: неоновые каркасные Flame Towers, ретро-окна системы, геометрия и музыкальные ноты.", "City edit about Baku and the Caspian Sea: 3D wireframes, flying type and fast cuts to the track.": "Городской эдит про Баку и Каспийское море: 3D-каркасы, летящий текст и быстрые склейки под трек.", "More coming": "Скоро будет больше", "New work is being added here.": "Здесь появятся новые работы.", "Ask for samples on Telegram ↗": "Попросить примеры в Telegram ↗", "Edits are on the way": "Эдиты скоро появятся", "More edits are being added to this page. Ask me on Telegram and I will send samples.": "Новые эдиты скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "3D work is on the way": "3D-работы скоро появятся", "3D models and design are being added to this page. Ask me on Telegram and I will send samples.": "3D-модели и дизайн скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "What I make": "Что я делаю", "Motion design for business": "Моушн-дизайн для бизнеса", "Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.": "Промо-ролики, рекламные споты и анимированные интро для магазинов, заведений и сообществ. Делаю во Fusion на основе ваших брендовых материалов.", "Get a quote ↗": "Узнать цену ↗", "Video edits": "Видеомонтаж", "Edits for YouTube, TikTok, Reels and Shorts, cut to the music, with motion blur on every transition.": "Эдиты для YouTube, TikTok, Reels и Shorts, смонтированные под музыку, с моушн-блюром на каждом переходе.", "3D models & design": "3D-модели и дизайн", "3D models and visual design: neon wireframes, stylized geometry and scenes built in Blender.": "3D-модели и визуальный дизайн: неоновые каркасы, стилизованная геометрия и сцены в Blender.", "Brief": "Бриф", "You send the idea, references and any assets. I reply with a plan and a price.": "Вы присылаете идею, референсы и материалы. Я отвечаю планом и ценой.", "Draft": "Черновик", "I send a first version. You tell me what to change.": "Я присылаю первую версию. Вы говорите, что поправить.", "Delivery": "Сдача", "I deliver the final file in the format you need.": "Я отдаю финальный файл в нужном вам формате.", "From €70 per video": "От €70 за видео", "Price per video": "Цена за видео", "Pick the type and the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.": "Выберите тип и длину. Базовая цена покрывает видео до 30 секунд; каждые дополнительные 15 секунд добавляют небольшой шаг.", "Edit · from €70": "Эдит · от €70", "Motion design · from €105": "Моушн-дизайн · от €105", "Length": "Длина", "Rush delivery (+50%)": "Срочная сдача (+50%)", "Estimate": "Оценка", "Order on Telegram ↗": "Заказать в Telegram ↗", "Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.": "Срочная сдача +50%. Оценка — это отправная точка: пришлите мне идею, и я подтвержу окончательную цену.", "Let's make": "Давайте", "it move": "оживим", "Write to me with what you need and where it will be published. I answer on Telegram.": "Напишите, что вам нужно и где ролик будет опубликован. Отвечаю в Telegram.", "Copy": "Копировать", "Copied": "Скопировано", "Selected": "Выделено", "Open for freelance orders": "Открыт для фриланс-заказов", "Prev": "Назад", "Next": "Далее", "Close": "Закрыть", "Edit": "Эдит"};
-  Object.assign(D,{"Sound on": "Звук включён", "Scroll": "Листайте", "Every video": "Каждое видео", "plays with sound": "играет со звуком", "About": "Обо мне", "Works on this page": "Работ на странице", "Client brands": "Бренда-клиента", "With sound": "Со звуком", "Play": "Смотреть"});
+  var D={"Work": "Работы", "Services": "Услуги", "Pricing": "Цены", "Telegram ↗": "Telegram ↗", "Freelance motion designer and video editor": "Фриланс моушн-дизайнер и видеомонтажёр", "Motion design": "Моушн-дизайн", "Edits": "Эдиты", "3D Design": "3D-дизайн", "Promo videos, animated intros and rhythm-driven edits. Sound design is half of the work, so every video on this page plays with sound.": "Промо-ролики, анимированные интро и эдиты в ритм музыке. Саунд-дизайн — половина работы, поэтому каждое видео на этой странице играет со звуком.", "Message me on Telegram ↗": "Написать в Telegram ↗", "See the work ↓": "Смотреть работы ↓", "Order ↓": "Заказать ↓", "Selected work": "Избранные работы", "Click a video to play it with sound": "Нажмите на видео, чтобы включить его со звуком", "Motion Design": "Моушн-дизайн", "3D Models & Design": "3D-модели и дизайн", "All": "Все", "Play with sound": "Смотреть со звуком", "Client work": "Работа для клиента", "Concept · personal project": "Концепт · личный проект", "Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.": "Вертикальная промо-реклама гастропаба в Баку: меню, атмосфера и часы работы в одном ролике.", "Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.": "Анимированное интро для игрового Discord-сервера в инопланетной теме: иконки приложений, свечение и кинетическая типографика.", "Promo for a photo and video production service: app-style UI cards, a shoot planner and bold color bursts.": "Промо для фото- и видеостудии: карточки в стиле приложения, планировщик съёмок и яркие цветовые вспышки.", "Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.": "Анимированная реклама банковской карты: сборка логотипа, развороты карты и быстрая ритмичная череда переходов.", "Second ABB bank concept: a blueprint-grid intro, cards fanning out into a spinning rosette around the logo and a motion-blur spin into the end card.": "Второй концепт для банка ABB: вступление на сетке-чертеже, карты раскрываются во вращающийся веер вокруг логотипа, а вращение с моушн-блюром переходит в финальный кадр.", "Animated fashion ad: logo reveal, product carousel and a store-style product card.": "Анимированная модная реклама: появление логотипа, карусель товаров и карточка товара в стиле магазина.", "Motion promo for a coffee brand on a delivery app: logo build, a 3D menu view and drink cards.": "Моушн-промо кофейного бренда в приложении доставки: сборка логотипа, 3D-меню и карточки напитков.", "Y2K collage edit about inFAMOUS Second Son: character cards, stickers and bright color blocks.": "Эдит-коллаж в стиле Y2K по inFAMOUS Second Son: карточки персонажей, стикеры и яркие цветовые блоки.", "Red and black blade edit with Japanese titles, film grain and hard cuts on the beat.": "Красно-чёрный эдит про клинки с японскими титрами, плёночным зерном и резкими склейками в бит.", "Dreamcore edit: neon wireframe Flame Towers, retro system pop-ups, geometry and music notes.": "Эдит в стиле дримкор: неоновые каркасные Flame Towers, ретро-окна системы, геометрия и музыкальные ноты.", "City edit about Baku and the Caspian Sea: 3D wireframes, flying type and fast cuts to the track.": "Городской эдит про Баку и Каспийское море: 3D-каркасы, летящий текст и быстрые склейки под трек.", "More coming": "Скоро будет больше", "New work is being added here.": "Здесь появятся новые работы.", "Ask for samples on Telegram ↗": "Попросить примеры в Telegram ↗", "Edits are on the way": "Эдиты скоро появятся", "More edits are being added to this page. Ask me on Telegram and I will send samples.": "Новые эдиты скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "3D work is on the way": "3D-работы скоро появятся", "3D models and design are being added to this page. Ask me on Telegram and I will send samples.": "3D-модели и дизайн скоро появятся на этой странице. Напишите мне в Telegram — пришлю примеры.", "What I make": "Что я делаю", "Motion design for business": "Моушн-дизайн для бизнеса", "Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.": "Промо-ролики, рекламные споты и анимированные интро для магазинов, заведений и сообществ. Делаю во Fusion на основе ваших брендовых материалов.", "Get a quote ↗": "Узнать цену ↗", "Video edits": "Видеомонтаж", "Edits for YouTube, TikTok, Reels and Shorts, cut to the music, with motion blur on every transition.": "Эдиты для YouTube, TikTok, Reels и Shorts, смонтированные под музыку, с моушн-блюром на каждом переходе.", "3D models & design": "3D-модели и дизайн", "3D models and visual design: neon wireframes, stylized geometry and scenes built in Blender.": "3D-модели и визуальный дизайн: неоновые каркасы, стилизованная геометрия и сцены в Blender.", "Brief": "Бриф", "You send the idea, references and any assets. I reply with a plan and a price.": "Вы присылаете идею, референсы и материалы. Я отвечаю планом и ценой.", "Draft": "Черновик", "I send a first version. You tell me what to change.": "Я присылаю первую версию. Вы говорите, что поправить.", "Delivery": "Сдача", "I deliver the final file in the format you need.": "Я отдаю финальный файл в нужном вам формате.", "From €70 per video": "От €70 за видео", "Price per video": "Цена за видео", "Pick the type and the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.": "Выберите тип и длину. Базовая цена покрывает видео до 30 секунд; каждые дополнительные 15 секунд добавляют небольшой шаг.", "Edit · from €70": "Эдит · от €70", "Motion design · from €105": "Моушн-дизайн · от €105", "Length": "Длина", "Rush delivery (+50%)": "Срочная сдача (+50%)", "Estimate": "Оценка", "Order on Telegram ↗": "Заказать в Telegram ↗", "Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.": "Срочная сдача +50%. Оценка — это отправная точка: пришлите мне идею, и я подтвержу окончательную цену.", "Let's make": "Давайте", "it move": "оживим", "Write to me with what you need and where it will be published. I answer on Telegram.": "Напишите, что вам нужно и где ролик будет опубликован. Отвечаю в Telegram.", "Copy": "Копировать", "Copied": "Скопировано", "Selected": "Выделено", "Open for freelance orders": "Открыт для фриланс-заказов", "Prev": "Назад", "Next": "Далее", "Close": "Закрыть", "Edit": "Эдит"};
+  Object.assign(D,{"Sound on": "Звук включён", "Scroll": "Листайте", "Every video": "Каждое видео", "plays with sound": "играет со звуком", "About": "Обо мне", "Works on this page": "Работ на странице", "Client brands": "Бренда-клиента", "With sound": "Со звуком", "Play": "Смотреть", "Keep scrolling": "Листайте дальше", "Showreel": "Шоурил", "Contact": "Контакты", "Works, prices and ordering below": "Ниже — работы, цены и заказ"});
   Object.assign(D,{"Sound": "Звук", "Scroll to browse →": "Листайте, чтобы смотреть →", "Scroll down for prices and ordering": "Листай вниз — там цены и заказ", "No AI": "Без ИИ", "Every work is made by hand, with no AI. I can send any project as an editable source file, so you can make changes yourself and see there is no AI inside.": "Все работы сделаны вручную, без ИИ. Любой проект могу отправить исходником, чтобы вы сами могли вносить правки и убедиться, что ИИ там нет."});
   Object.assign(D,{"Place an order": "Оформить заказ", "First name": "Имя", "Last name": "Фамилия", "Phone": "Телефон", "Email": "Почта", "What do you need": "Что вам нужно", "Submit": "Отправить", "Sending…": "Отправляю…", "Thank you! I got your request and will reply soon.": "Спасибо! Заявка получена, скоро отвечу.", "Please fill in all fields correctly.": "Пожалуйста, заполните все поля корректно.", "Could not send. Please try again or message me on Telegram.": "Не удалось отправить. Попробуйте ещё раз или напишите мне в Telegram.", "Estimate: ": "Оценка: "});
   var btn=document.getElementById('lang'),lang='en',busy=false,obs;
@@ -1070,7 +1125,8 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 
   /* scroll-driven: hero out, showreel expand, statement fill */
   var hin=document.getElementById('hxin'),hbg=document.querySelector('.hx-bg'),xp=document.getElementById('xp'),xm=document.getElementById('xpmedia'),
-      xl=document.querySelector('.xp-l'),xr=document.querySelector('.xp-r'),xc=document.querySelector('.xp-cap'),stt=document.getElementById('stt');
+      xl=document.querySelector('.xp-l'),xr=document.querySelector('.xp-r'),xc=document.querySelector('.xp-cap'),stt=document.getElementById('stt'),
+      st=document.querySelector('.st'),xn=document.getElementById('xpnext');
   function onScroll(){
     var y=scrollY;
     top.classList.toggle('clear',y<40);
@@ -1078,17 +1134,25 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
     hin.style.transform='translate3d(0,'+(-p*90)+'px,0) scale('+(1+p*.06)+')';
     hin.style.opacity=1-p*1.15;hin.style.filter='blur('+(p*10)+'px)';
     hbg.style.transform='scale('+(1.12+p*.12)+') translate3d(0,'+(p*60)+'px,0)';
-    // showreel
-    var r=xp.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh),0,1),e=q<.5?2*q*q:1-Math.pow(-2*q+2,2)/2;
+    // showreel: grows into a framed 16:9 screen with margins (never full-bleed, so it never reads as the end of the page),
+    // and the About sheet starts rising over it before it even finishes growing
+    var r=xp.getBoundingClientRect(),L=Math.max(r.height-vh*1.8,vh*.5),q=clamp(-r.top/L,0,1),e=q<.5?2*q*q:1-Math.pow(-2*q+2,2)/2;
     var mob=vw<=760,w0=mob?vw*.78:vw*.44,h0=w0*9/16;
-    // on phones the showreel grows to full width but keeps 16:9, so nothing is cropped
-    var h1=mob?Math.min(vh,vw*9/16):vh;
-    xm.style.setProperty('--w',lerp(w0,vw,e)+'px');xm.style.setProperty('--h',lerp(h0,h1,e)+'px');
-    xm.style.setProperty('--r',lerp(10,0,e)+'px');xm.style.setProperty('--g',(1-e).toFixed(3));
+    var w1=mob?vw-32:Math.min(vw*.86,vh*.72*16/9),h1=w1*9/16;
+    xm.style.setProperty('--w',lerp(w0,w1,e)+'px');xm.style.setProperty('--h',lerp(h0,h1,e)+'px');
+    xm.style.setProperty('--r',lerp(10,mob?10:18,e)+'px');xm.style.setProperty('--g',(1-e).toFixed(3));
+    xm.style.setProperty('--vo',clamp((e-.35)*2.5,0,1).toFixed(3));xm.style.setProperty('--vi',lerp(-26,mob?10:16,e)+'px');
     xm.style.setProperty('--po',clamp((q-.75)*5,0,1));xc.style.setProperty('--co',clamp((q-.75)*5,0,1));
     var off=(e*vw*.35)+'px';
-    if(!mob){xl.style.setProperty('--tx','-'+off);xr.style.setProperty('--tx','-'+off);} 
+    if(!mob){xl.style.setProperty('--tx','-'+off);xr.style.setProperty('--tx','-'+off);}
     xl.style.opacity=xr.style.opacity=1-clamp(e*1.6,0,1);
+    // sheet cover: c=0 when About's top edge is at the bottom of the screen, 1 when it reaches the top
+    var stTop=st.getBoundingClientRect().top,c=clamp(1-stTop/vh,0,1),ce=1-Math.pow(1-c,2);
+    xm.style.setProperty('--cs',(1-ce*.12).toFixed(4));xm.style.setProperty('--cy',(-ce*vh*.08)+'px');xm.style.setProperty('--cb',(1-ce*.65).toFixed(3));
+    xc.style.opacity=1-clamp(c*3,0,1);
+    xn.style.setProperty('--no',(clamp((e-.3)*2.5,0,1)*(1-clamp(c*4,0,1))).toFixed(3));
+    xn.style.pointerEvents=c>.2||e<.3?'none':'auto';
+    st.style.setProperty('--sr',lerp(mob?20:28,0,clamp((c-.85)/.15,0,1))+'px');
     // statement fill
     var sr=stt.getBoundingClientRect(),sp=clamp((vh*.85-sr.top)/(sr.height+vh*.35),0,1);
     stt.style.setProperty('--p',sp.toFixed(3));
@@ -1097,10 +1161,33 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 
   xm.addEventListener('click',function(){var f=document.querySelector('.work[data-title="Invizione Ad"] .frame');if(f)f.click();});
 
+  /* live timecode on the showreel frame (HH:MM:SS:FF at 25 fps), only while it is on screen */
+  (function(){var tc=document.getElementById('xptc'),v=xm.querySelector('video'),on=false,last='';
+    function p2(n){return(n<10?'0':'')+n}
+    function tick(){if(!on)return;var t=v.currentTime||0,s=Math.floor(t),out='00:'+p2(Math.floor(s/60))+':'+p2(s%60)+':'+p2(Math.floor((t-s)*25));
+      if(out!==last){tc.textContent=out;last=out;}requestAnimationFrame(tick);}
+    new IntersectionObserver(function(es){var was=on;on=es[0].isIntersecting;if(on&&!was)requestAnimationFrame(tick);}).observe(xm);
+  })();
+
+  /* section rail + smooth jumps (no hash, so the page still opens at the top next time) */
+  (function(){var rail=document.getElementById('rail'),links=[].slice.call(rail.querySelectorAll('a')),
+      secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))}),cur=-1;
+    function upd(){var mid=vh*.5,k=-1;
+      for(var i=0;i<secs.length;i++){if(secs[i]&&secs[i].getBoundingClientRect().top<=mid)k=i;}
+      rail.classList.toggle('on',scrollY>vh*.55);
+      if(k!==cur){cur=k;links.forEach(function(a,i){a.classList.toggle('cur',i===k);a.classList.toggle('past',i<k);});}
+    }
+    addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+    function jump(e){var t=document.querySelector(this.getAttribute('href'));if(!t)return;e.preventDefault();
+      window.scrollTo({top:t.getBoundingClientRect().top+scrollY+(t.id==='xp'?vh*.9:0),behavior:'smooth'});}
+    links.concat([document.getElementById('xpnext')]).forEach(function(a){a.addEventListener('click',jump)});
+  })();
+
   /* number scramble */
   var stats=document.getElementById('stats');
   new IntersectionObserver(function(es,o){if(!es[0].isIntersecting)return;o.disconnect();stats.classList.add('in');
     [].forEach.call(stats.querySelectorAll('.num'),function(el,k){
+      if('works' in el.dataset)el.dataset.n=document.querySelectorAll('.work').length;
       var n=+el.dataset.n,pad=+(el.dataset.pad||String(n).length),suf=el.dataset.suf||'',fin=(('000'+n).slice(-Math.max(pad,String(n).length))),s0=performance.now()+k*180,dur=1300;
       (function run(t){var q=clamp((t-s0)/dur,0,1),out='';for(var i=0;i<fin.length;i++){out+=q>(i+1)/(fin.length+1)?fin[i]:Math.floor(Math.random()*10);}el.textContent=out+suf;if(q<1)requestAnimationFrame(run);else el.textContent=fin+suf;})(performance.now());
     });
