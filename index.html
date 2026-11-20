@@ -358,6 +358,8 @@ h2 .ch{display:inline-block;transition:transform 1.1s var(--ease),filter 1.1s va
 .cur.big span{opacity:1}
 .cur.link{width:44px;height:44px;margin:-22px 0 0 -22px;background:transparent;border:1px solid #fff}
 @media (pointer:fine){.cur{display:flex}}
+/* the plain dot that followed the mouse is gone; only the "Play" bubble over videos and the ring over links remain */
+.cur:not(.big):not(.link){opacity:0}
 
 /* contact: cinematic */
 .contact{position:relative;background:#050505;color:var(--fg);overflow:hidden;isolation:isolate}
@@ -1187,7 +1189,7 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
     cur.classList.toggle('big',!!(t.closest&&t.closest('.frame,.xp-media')));
     cur.classList.toggle('link',!cur.classList.contains('big')&&!!(t.closest&&t.closest('a,button,input,label,textarea')));
   });
-  document.addEventListener('pointerleave',function(){cur.style.opacity=0});document.addEventListener('pointerenter',function(){cur.style.opacity=1});
+  document.addEventListener('pointerleave',function(){cur.style.opacity=0});document.addEventListener('pointerenter',function(){cur.style.opacity=''});
   (function cl(){kx=lerp(kx,cx,.22);ky=lerp(ky,cy,.22);cur.style.transform='translate3d('+kx+'px,'+ky+'px,0)';var st=document.getElementById('stage'),od=document.getElementById('order');cur.style.visibility=(st&&!st.hidden)||(od&&!od.hidden)?'hidden':'visible';requestAnimationFrame(cl);})();
 
   /* magnetic buttons */
