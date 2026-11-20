@@ -64,6 +64,15 @@ button{font:inherit;color:inherit}
 @media (max-width:480px){.order .row{grid-template-columns:1fr}}
 .nav button.lang{background:none;color:inherit;font:inherit;cursor:pointer;letter-spacing:.06em}
 .nav button.lang:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.langbox{position:relative;flex:none}
+.nav button.lang{display:inline-flex;align-items:center;gap:8px}
+.lang .chev{width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .3s var(--ease)}
+.langbox.open .lang .chev{transform:translateY(1px) rotate(225deg)}
+.langmenu{position:absolute;top:calc(100% + 10px);right:0;z-index:60;min-width:170px;margin:0;padding:6px;list-style:none;background:rgba(10,10,10,.94);border:1px solid var(--fg);border-radius:18px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s .25s}
+.langbox.open .langmenu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.langmenu button{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;padding:10px 14px;border:0;border-radius:12px;background:none;color:var(--fg);font:inherit;letter-spacing:.06em;text-align:left;cursor:pointer}
+.langmenu button:hover,.langmenu button:focus-visible{background:var(--fg);color:var(--bg);outline:none}
+.langmenu button[aria-selected=true]::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 [lang=ru]{--display:'Oswald',Impact,'Arial Narrow',sans-serif;--body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
 [lang=ru] h1,[lang=ru] h2{letter-spacing:0}
 @media (max-width:560px){.nav .hide-s{display:none}}
@@ -462,7 +471,14 @@ html,body{overflow-x:clip}
       <a class="hide-s" href="#services">Services</a>
       <a class="hide-s" href="#pricing">Pricing</a>
       <button class="pill snd" id="snd" type="button" aria-pressed="false" aria-label="Sound"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="snd-t">Sound</span></button>
-      <button class="pill lang" id="lang" type="button" aria-label="Switch language">RU</button>
+      <div class="langbox" id="langbox">
+        <button class="pill lang" id="lang" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language"><span id="langcur">EN</span><i class="chev" aria-hidden="true"></i></button>
+        <ul class="langmenu" id="langmenu" role="listbox" aria-label="Language">
+          <li role="none"><button type="button" role="option" data-l="en" lang="en">English</button></li>
+          <li role="none"><button type="button" role="option" data-l="es" lang="es">Español</button></li>
+          <li role="none"><button type="button" role="option" data-l="ru" lang="ru">Русский</button></li>
+        </ul>
+      </div>
       <a class="pill" href="https://t.me/andres_de_f" target="_blank" rel="noopener">Telegram ↗</a>
     </nav>
   </div>
@@ -929,23 +945,33 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
 (function(){
   var D={"Work": "Работы", "Services": "Услуги", "Pricing": "Цены", "Telegram ↗": "Telegram ↗", "Freelance motion designer": "Фриланс моушн-дизайнер", "Motion design": "Моушн-дизайн", "Motion Design": "Моушн-дизайн", "Promo ads": "Промо-реклама", "Animated intros": "Анимированные интро", "Promo videos, animated intros and ads cut to the rhythm of the music. Sound design is half of the work, so every video on this page plays with sound.": "Промо-ролики, анимированные интро и реклама в ритм музыке. Саунд-дизайн — половина работы, поэтому каждое видео на этой странице играет со звуком.", "Message me on Telegram ↗": "Написать в Telegram ↗", "See the work ↓": "Смотреть работы ↓", "Order ↓": "Заказать ↓", "Selected work": "Избранные работы", "Click a video to play it with sound": "Нажмите на видео, чтобы включить его со звуком", "Play with sound": "Смотреть со звуком", "Client work": "Работа для клиента", "Concept · personal project": "Концепт · личный проект", "Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.": "Вертикальная промо-реклама гастропаба в Баку: меню, атмосфера и часы работы в одном ролике.", "Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.": "Анимированное интро для игрового Discord-сервера в инопланетной теме: иконки приложений, свечение и кинетическая типографика.", "Promo for a photo and video production service: app-style UI cards, a shoot planner and bold color bursts.": "Промо для фото- и видеостудии: карточки в стиле приложения, планировщик съёмок и яркие цветовые вспышки.", "Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.": "Анимированная реклама банковской карты: сборка логотипа, развороты карты и быстрая ритмичная череда переходов.", "Second ABB bank concept: a blueprint-grid intro, cards fanning out into a spinning rosette around the logo and a motion-blur spin into the end card.": "Второй концепт для банка ABB: вступление на сетке-чертеже, карты раскрываются во вращающийся веер вокруг логотипа, а вращение с моушн-блюром переходит в финальный кадр.", "Animated fashion ad: logo reveal, product carousel and a store-style product card.": "Анимированная модная реклама: появление логотипа, карусель товаров и карточка товара в стиле магазина.", "Motion promo for a coffee brand on a delivery app: logo build, a 3D menu view and drink cards.": "Моушн-промо кофейного бренда в приложении доставки: сборка логотипа, 3D-меню и карточки напитков.", "More coming": "Скоро будет больше", "New work is being added here.": "Здесь появятся новые работы.", "Ask for samples on Telegram ↗": "Попросить примеры в Telegram ↗", "What I make": "Что я делаю", "Motion design for business": "Моушн-дизайн для бизнеса", "Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.": "Промо-ролики, рекламные споты и анимированные интро для магазинов, заведений и сообществ. Делаю во Fusion на основе ваших брендовых материалов.", "Get a quote ↗": "Узнать цену ↗", "Animated intros & logos": "Анимированные интро и логотипы", "Intros for channels and servers, logo reveals and kinetic type, timed to the beat of your track.": "Интро для каналов и серверов, появление логотипов и кинетическая типографика, выстроенные под ритм вашего трека.", "App & product animation": "Анимация приложений и продуктов", "App-style UI cards, product carousels and promo ads for services, shops and brands.": "Карточки в стиле приложения, карусели товаров и промо-реклама для сервисов, магазинов и брендов.", "Brief": "Бриф", "You send the idea, references and any assets. I reply with a plan and a price.": "Вы присылаете идею, референсы и материалы. Я отвечаю планом и ценой.", "Draft": "Черновик", "I send a first version. You tell me what to change.": "Я присылаю первую версию. Вы говорите, что поправить.", "Delivery": "Сдача", "I deliver the final file in the format you need.": "Я отдаю финальный файл в нужном вам формате.", "From €84 per video": "От €84 за видео", "Price per video": "Цена за видео", "Pick the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.": "Выберите длину. Базовая цена покрывает видео до 30 секунд; каждые дополнительные 15 секунд добавляют небольшой шаг.", "Motion design · from €84": "Моушн-дизайн · от €84", "Length": "Длина", "Rush delivery (+50%)": "Срочная сдача (+50%)", "Estimate": "Оценка", "Order on Telegram ↗": "Заказать в Telegram ↗", "Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.": "Срочная сдача +50%. Оценка — это отправная точка: пришлите мне идею, и я подтвержу окончательную цену.", "Let's make": "Давайте", "it move": "оживим", "Write to me with what you need and where it will be published. I answer on Telegram.": "Напишите, что вам нужно и где ролик будет опубликован. Отвечаю в Telegram.", "Copy": "Копировать", "Copied": "Скопировано", "Selected": "Выделено", "Open for freelance orders": "Открыт для фриланс-заказов", "Prev": "Назад", "Next": "Далее", "Close": "Закрыть"};
   Object.assign(D,{"Sound on": "Звук включён", "Scroll": "Листайте", "Every video": "Каждое видео", "plays with sound": "играет со звуком", "About": "Обо мне", "Works on this page": "Работ на странице", "Client brands": "Бренда-клиента", "With sound": "Со звуком", "Play": "Смотреть", "Keep scrolling": "Листайте дальше", "Showreel": "Шоурил", "Contact": "Контакты", "Works, prices and ordering below": "Ниже — работы, цены и заказ"});
-  Object.assign(D,{"Motion": "Моушн", "Design": "дизайн", "by Andrés de Fonollosa": "Андрес де Фонольоса", "Promo ads, animated intros and app animation for brands that want to be noticed.": "Рекламные ролики, анимированные заставки и анимация приложений для брендов, которых должны заметить."});
+  Object.assign(D,{"Motion": "Моушн", "Design": "дизайн", "by Andrés de Fonollosa": "Андрес де Фоноллоса", "Promo ads, animated intros and app animation for brands that want to be noticed.": "Рекламные ролики, анимированные заставки и анимация приложений для брендов, которых должны заметить."});
   Object.assign(D,{"Sound": "Звук", "Scroll to browse →": "Листайте, чтобы смотреть →", "Scroll down for prices and ordering": "Листай вниз — там цены и заказ", "No AI": "Без ИИ", "Every work is made by hand, with no AI. I can send any project as an editable source file, so you can make changes yourself and see there is no AI inside.": "Все работы сделаны вручную, без ИИ. Любой проект могу отправить исходником, чтобы вы сами могли вносить правки и убедиться, что ИИ там нет."});
   Object.assign(D,{"Place an order": "Оформить заказ", "First name": "Имя", "Last name": "Фамилия", "Phone": "Телефон", "Email": "Почта", "What do you need": "Что вам нужно", "Submit": "Отправить", "Sending…": "Отправляю…", "Thank you! I got your request and will reply soon.": "Спасибо! Заявка получена, скоро отвечу.", "Please fill in all fields correctly.": "Пожалуйста, заполните все поля корректно.", "Could not send. Please try again or message me on Telegram.": "Не удалось отправить. Попробуйте ещё раз или напишите мне в Telegram.", "Estimate: ": "Оценка: "});
-  var btn=document.getElementById('lang'),lang='en',busy=false,obs;
-  function plural(n){var a=n%10,b=n%100;return (a==1&&b!=11)?'шаг':(a>=2&&a<=4&&(b<12||b>14))?'шага':'шагов';}
-  function tr(k){
-    if(D.hasOwnProperty(k))return D[k];
-    var e=k.match(/^Estimate: (.*)$/);if(e){var rr=tr(e[1]);return 'Оценка: '+(rr===null?e[1]:rr);}
+  var E={"Work": "Trabajos", "Services": "Servicios", "Pricing": "Precios", "Telegram ↗": "Telegram ↗", "Freelance motion designer": "Motion designer freelance", "Motion design": "Motion design", "Motion Design": "Motion design", "Promo ads": "Anuncios promocionales", "Animated intros": "Intros animadas", "Promo videos, animated intros and ads cut to the rhythm of the music. Sound design is half of the work, so every video on this page plays with sound.": "Vídeos promocionales, intros animadas y anuncios montados al ritmo de la música. El diseño de sonido es la mitad del trabajo, por eso todos los vídeos de esta página suenan con audio.", "Message me on Telegram ↗": "Escríbeme por Telegram ↗", "See the work ↓": "Ver los trabajos ↓", "Order ↓": "Pedir ↓", "Selected work": "Trabajos destacados", "Click a video to play it with sound": "Haz clic en un vídeo para verlo con sonido", "Play with sound": "Ver con sonido", "Client work": "Trabajo para cliente", "Concept · personal project": "Concepto · proyecto personal", "Vertical promo ad for a gastropub in Baku: menu, atmosphere and opening hours in one clip.": "Anuncio promocional vertical de un gastropub de Bakú: carta, ambiente y horario en un solo clip.", "Animated intro for a gaming Discord server with an alien theme: app icons, glow and kinetic type.": "Intro animada para un servidor de Discord gamer con temática alienígena: iconos de apps, brillos y tipografía cinética.", "Promo for a photo and video production service: app-style UI cards, a shoot planner and bold color bursts.": "Promo para un servicio de producción de foto y vídeo: tarjetas con estilo de app, un planificador de rodajes y destellos de color intensos.", "Animated ad for a bank card: logo build, card flips and a fast rhythmic transition sequence.": "Anuncio animado de una tarjeta bancaria: construcción del logo, giros de tarjeta y una secuencia rápida de transiciones al ritmo.", "Second ABB bank concept: a blueprint-grid intro, cards fanning out into a spinning rosette around the logo and a motion-blur spin into the end card.": "Segundo concepto para el banco ABB: una intro sobre cuadrícula de plano, tarjetas que se abren en una roseta giratoria alrededor del logo y un giro con motion blur hasta la pantalla final.", "Animated fashion ad: logo reveal, product carousel and a store-style product card.": "Anuncio animado de moda: aparición del logo, carrusel de productos y una ficha de producto al estilo tienda.", "Motion promo for a coffee brand on a delivery app: logo build, a 3D menu view and drink cards.": "Promo en motion de una marca de café en una app de reparto: construcción del logo, carta en 3D y fichas de bebidas.", "More coming": "Más en camino", "New work is being added here.": "Aquí se irán añadiendo nuevos trabajos.", "Ask for samples on Telegram ↗": "Pide ejemplos por Telegram ↗", "What I make": "Lo que hago", "Motion design for business": "Motion design para empresas", "Promo videos, ad spots and animated intros for shops, venues and communities. Built in Fusion, with your brand assets.": "Vídeos promocionales, spots publicitarios e intros animadas para tiendas, locales y comunidades. Hechos en Fusion, con los recursos de tu marca.", "Get a quote ↗": "Pedir presupuesto ↗", "Animated intros & logos": "Intros y logos animados", "Intros for channels and servers, logo reveals and kinetic type, timed to the beat of your track.": "Intros para canales y servidores, apariciones de logo y tipografía cinética, sincronizadas con el ritmo de tu tema.", "App & product animation": "Animación de apps y productos", "App-style UI cards, product carousels and promo ads for services, shops and brands.": "Tarjetas con estilo de app, carruseles de productos y anuncios promocionales para servicios, tiendas y marcas.", "Brief": "Brief", "You send the idea, references and any assets. I reply with a plan and a price.": "Me envías la idea, las referencias y los recursos. Te respondo con un plan y un precio.", "Draft": "Borrador", "I send a first version. You tell me what to change.": "Te envío una primera versión. Tú me dices qué cambiar.", "Delivery": "Entrega", "I deliver the final file in the format you need.": "Entrego el archivo final en el formato que necesites.", "From €84 per video": "Desde 84 € por vídeo", "Price per video": "Precio por vídeo", "Pick the length. The base price covers a video up to 30 seconds; every extra 15 seconds adds a small step.": "Elige la duración. El precio base cubre un vídeo de hasta 30 segundos; cada 15 segundos extra suma un pequeño escalón.", "Motion design · from €84": "Motion design · desde 84 €", "Length": "Duración", "Rush delivery (+50%)": "Entrega urgente (+50%)", "Estimate": "Presupuesto estimado", "Order on Telegram ↗": "Pedir por Telegram ↗", "Rush delivery +50%. The estimate is a starting point: send me your idea and I will confirm the final price.": "Entrega urgente +50%. La estimación es un punto de partida: envíame tu idea y te confirmo el precio final.", "Let's make": "Hagamos que", "it move": "se mueva", "Write to me with what you need and where it will be published. I answer on Telegram.": "Cuéntame qué necesitas y dónde se publicará. Respondo por Telegram.", "Copy": "Copiar", "Copied": "Copiado", "Selected": "Seleccionado", "Open for freelance orders": "Abierto a encargos freelance", "Prev": "Anterior", "Next": "Siguiente", "Close": "Cerrar",
+    "Sound on": "Sonido activado", "Scroll": "Desliza", "Every video": "Todos los vídeos", "plays with sound": "suenan con audio", "About": "Sobre mí", "Works on this page": "Trabajos en esta página", "Client brands": "Marcas cliente", "With sound": "Con sonido", "Play": "Ver", "Keep scrolling": "Sigue bajando", "Showreel": "Showreel", "Contact": "Contacto", "Works, prices and ordering below": "Más abajo: trabajos, precios y pedidos",
+    "Motion": "Motion", "Design": "design", "by Andrés de Fonollosa": "por Andrés de Fonollosa", "Promo ads, animated intros and app animation for brands that want to be noticed.": "Anuncios promocionales, intros animadas y animación de apps para marcas que quieren destacar.",
+    "Sound": "Sonido", "Scroll to browse →": "Desliza para ver →", "Scroll down for prices and ordering": "Baja para ver precios y pedir", "No AI": "Sin IA", "Every work is made by hand, with no AI. I can send any project as an editable source file, so you can make changes yourself and see there is no AI inside.": "Todos los trabajos están hechos a mano, sin IA. Puedo enviarte cualquier proyecto como archivo fuente editable, para que hagas cambios tú mismo y compruebes que no hay IA dentro.",
+    "Place an order": "Hacer un pedido", "First name": "Nombre", "Last name": "Apellidos", "Phone": "Teléfono", "Email": "Correo", "What do you need": "¿Qué necesitas?", "Submit": "Enviar", "Sending…": "Enviando…", "Thank you! I got your request and will reply soon.": "¡Gracias! He recibido tu solicitud y responderé pronto.", "Please fill in all fields correctly.": "Por favor, rellena todos los campos correctamente.", "Could not send. Please try again or message me on Telegram.": "No se pudo enviar. Inténtalo de nuevo o escríbeme por Telegram.", "Estimate: ": "Estimación: "};
+  var X={
+    ru:{d:D,est:'Оценка: ',base:'базовая цена',rush:'срочно',extra:function(n){var a=n%10,b=n%100;return '+'+n+' доп. '+((a==1&&b!=11)?'шаг':(a>=2&&a<=4&&(b<12||b>14))?'шага':'шагов');}},
+    es:{d:E,est:'Estimación: ',base:'precio base',rush:'urgente',extra:function(n){return '+'+n+(n==1?' paso extra':' pasos extra');}}
+  };
+  var CODE={en:'EN',es:'ES',ru:'RU'};
+  var box=document.getElementById('langbox'),btn=document.getElementById('lang'),menu=document.getElementById('langmenu'),cur=document.getElementById('langcur'),lang='en',busy=false,obs;
+  function tr(k,l){
+    var x=X[l],d=x.d;
+    if(d.hasOwnProperty(k))return d[k];
+    var e=k.match(/^Estimate: (.*)$/);if(e){var rr=tr(e[1],l);return x.est+(rr===null?e[1]:rr);}
     var m=k.match(/^© (\d{4}) Andres$/);if(m)return '© '+m[1]+' Andres';
     if(k.indexOf(' · ')>-1){
       var parts=k.split(' · '),out=[],ok=false;
       parts.forEach(function(p){
-        var x=p.match(/^\+(\d+) extra steps?$/);
-        if(x){out.push('+'+x[1]+' доп. '+plural(+x[1]));ok=true;}
-        else if(p==='base price'){out.push('базовая цена');ok=true;}
-        else if(p==='rush'){out.push('срочно');ok=true;}
-        else if(D.hasOwnProperty(p)){out.push(D[p]);ok=true;}
+        var s=p.match(/^\+(\d+) extra steps?$/);
+        if(s){out.push(x.extra(+s[1]));ok=true;}
+        else if(p==='base price'){out.push(x.base);ok=true;}
+        else if(p==='rush'){out.push(x.rush);ok=true;}
+        else if(d.hasOwnProperty(p)){out.push(d[p]);ok=true;}
         else out.push(p);
       });
       return ok?out.join(' · '):null;
@@ -955,43 +981,48 @@ len.addEventListener('input',f);rush.addEventListener('change',f);f()})();
   function walk(root){
     var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];
     while((n=w.nextNode())){
-      var p=n.parentNode;if(!p||p.closest('script,style,#lang'))continue;
+      var p=n.parentNode;if(!p||p.closest('script,style,#langbox'))continue;
       list.push(n);
     }
     return list;
   }
-  function toRu(root){
+  function toLang(root){
     walk(root).forEach(function(n){
-      if(n.__ru!==undefined&&n.nodeValue===n.__ru)return;
+      if(n.__tr!==undefined&&n.nodeValue===n.__tr)return;
       var v=n.nodeValue,k=v.trim();if(!k)return;
-      var r=tr(k);if(r===null)return;
+      var r=tr(k,lang);if(r===null)return;
       var nv=v.replace(k,r);
-      n.__en=v;n.__ru=nv;n.nodeValue=nv;
+      n.__en=v;n.__tr=nv;n.nodeValue=nv;
     });
   }
   function toEn(root){
     walk(root).forEach(function(n){
-      if(n.__en!==undefined){if(n.nodeValue===n.__ru)n.nodeValue=n.__en;delete n.__en;delete n.__ru;}
+      if(n.__en!==undefined){if(n.nodeValue===n.__tr)n.nodeValue=n.__en;delete n.__en;delete n.__tr;}
     });
   }
   function run(fn){busy=true;try{fn(document.body);}finally{busy=false;if(obs)obs.takeRecords();}}
   function set(l){
     lang=l;
     document.documentElement.lang=l;
-    run(l==='ru'?toRu:toEn);
-    btn.textContent=l==='ru'?'EN':'RU';
-    btn.setAttribute('aria-label',l==='ru'?'Switch to English':'Переключить на русский');
+    run(toEn);
+    if(l!=='en')run(toLang);
+    cur.textContent=CODE[l];
+    [].forEach.call(menu.querySelectorAll('button'),function(b){b.setAttribute('aria-selected',b.getAttribute('data-l')===l?'true':'false');});
     try{localStorage.setItem('lang',l);}catch(e){}
   }
   obs=new MutationObserver(function(){
-    if(busy||lang!=='ru')return;
-    run(toRu);
+    if(busy||lang==='en')return;
+    run(toLang);
   });
   obs.observe(document.body,{childList:true,subtree:true,characterData:true});
-  btn.addEventListener('click',function(){set(lang==='ru'?'en':'ru');});
+  function openMenu(o){box.classList.toggle('open',o);btn.setAttribute('aria-expanded',o?'true':'false');}
+  btn.addEventListener('click',function(e){e.stopPropagation();openMenu(!box.classList.contains('open'));});
+  menu.addEventListener('click',function(e){var b=e.target.closest('button[data-l]');if(!b)return;set(b.getAttribute('data-l'));openMenu(false);btn.focus();});
+  document.addEventListener('click',function(e){if(!box.contains(e.target))openMenu(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('open')){openMenu(false);btn.focus();}});
   var saved=null;try{saved=localStorage.getItem('lang');}catch(e){}
-  if(!saved)saved=((navigator.language||'').toLowerCase().indexOf('ru')===0)?'ru':'en';
-  if(saved==='ru')set('ru');
+  if(!saved||!CODE[saved]){var nl=(navigator.language||'').toLowerCase();saved=nl.indexOf('ru')===0?'ru':nl.indexOf('es')===0?'es':'en';}
+  set(saved);
 })();
 </script>
 <script>
